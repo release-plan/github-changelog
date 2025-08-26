@@ -17,11 +17,14 @@ describe("github api", function () {
     };
     expect(github.getBaseIssueUrl("foo")).toEqual(`https://github.host.com/foo/issues/`);
 
-    github.getUserData("foo");
+    github.getUserData({ login: "foo", html_url: "" });
     expect(fetchedUrl).toEqual(`https://api.github.host.com/users/foo`);
 
     github.getIssueData("foo", "2");
     expect(fetchedUrl).toEqual(`https://api.github.host.com/repos/foo/issues/2`);
+
+    github.getUserData({ login: "Copilot", html_url: "https://github.com/apps/copilot-swe-agent" });
+    expect(fetchedUrl).toEqual(`https://api.github.host.com/apps/copilot-swe-agent`);
 
     delete process.env.GITHUB_DOMAIN;
 
@@ -36,7 +39,7 @@ describe("github api", function () {
     };
     expect(github.getBaseIssueUrl("foo")).toEqual(`https://github.com/foo/issues/`);
 
-    github.getUserData("foo");
+    github.getUserData({ login: "foo", html_url: "" });
     expect(fetchedUrl).toEqual(`https://api.github.host2.com/users/foo`);
 
     github.getIssueData("foo", "2");

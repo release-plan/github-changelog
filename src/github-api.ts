@@ -3,10 +3,13 @@ const path = require("path");
 import ConfigurationError from "./configuration-error";
 import fetch from "./fetch";
 
-export interface GitHubUserResponse {
+interface GithubUserInfo {
   login: string;
-  name: string;
   html_url: string;
+}
+
+export interface GitHubUserResponse extends GithubUserInfo {
+  name: string;
 }
 
 export interface GitHubIssueResponse {
@@ -18,10 +21,7 @@ export interface GitHubIssueResponse {
   labels: Array<{
     name: string;
   }>;
-  user: {
-    login: string;
-    html_url: string;
-  };
+  user: GithubUserInfo;
 }
 
 export interface Options {
@@ -54,9 +54,16 @@ export default class GithubAPI {
     return this._fetch(`${prefix}/repos/${repo}/issues/${issue}`);
   }
 
-  public async getUserData(login: string): Promise<GitHubUserResponse> {
+  public async getUserData(userInfo: GithubUserInfo): Promise<GitHubUserResponse> {
+    let login = userInfo.login;
+    let path = "users";
+
+    if (userInfo.html_url && userInfo.html_url.includes("/apps/")) {
+      path = "apps";
+      login = userInfo.html_url.split("/").pop() as string;
+    }
     const prefix = process.env.GITHUB_API_URL || `https://api.${this.github}`;
-    return this._fetch(`${prefix}/users/${login}`);
+    return this._fetch(`${prefix}/${path}/${login}`);
   }
 
   private async _fetch(url: string): Promise<any> {
