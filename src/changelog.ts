@@ -215,7 +215,7 @@ export default class Changelog {
         }
 
         let prUserLogin = commit.githubIssue?.user.login;
-        if (prUserLogin && (!this.ignoreCommitter(prUserLogin) || !commit.githubIssue.labels.includes(this.config.wildcardLabel))) {
+        if (prUserLogin && (!this.ignoreCommitter(prUserLogin) || !commit.githubIssue?.labels.map(l => l.name).includes(this.config.wildcardLabel))) {
           releaseMap[currentTag].commits.push(commit);
         }
       }
