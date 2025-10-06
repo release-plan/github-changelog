@@ -197,8 +197,26 @@ export default class Changelog {
     // multiple release tags.
     let releaseMap: { [id: string]: Release } = {};
 
+    function pushCommit(this: Changelog, currentTag: string, commit: CommitInfo) {
+      if (!releaseMap[currentTag]) {
+        let date = currentTag === UNRELEASED_TAG ? this.getToday() : commit.date;
+        releaseMap[currentTag] = { name: currentTag, date, commits: [] };
+      }
+
+      let prUserLogin = commit.githubIssue?.user.login;
+      let hasCustomLabel = commit.githubIssue && !commit.githubIssue.labels.map(l => l.name).includes(this.config.wildcardLabel));
+      if (prUserLogin && !this.ignoreCommitter(prUserLogin) || hasCustomLabel) {
+        releaseMap[currentTag].commits.push(commit);
+      }
+    }
+
     let currentTags = [UNRELEASED_TAG];
     for (const commit of commits) {
+      if (this.config.ignoreReleases) {
+        pushCommit.call(this, UNRELEASED_TAG, commit);
+        continue;
+      }
+
       if (commit.tags && commit.tags.length > 0) {
         currentTags = commit.tags;
       }
@@ -209,15 +227,7 @@ export default class Changelog {
       // the same commits are "duplicated" across the different tags
       // referencing them.
       for (const currentTag of currentTags) {
-        if (!releaseMap[currentTag]) {
-          let date = currentTag === UNRELEASED_TAG ? this.getToday() : commit.date;
-          releaseMap[currentTag] = { name: currentTag, date, commits: [] };
-        }
-
-        let prUserLogin = commit.githubIssue?.user.login;
-        if (prUserLogin && (!this.ignoreCommitter(prUserLogin) || !commit.githubIssue?.labels.map(l => l.name).includes(this.config.wildcardLabel))) {
-          releaseMap[currentTag].commits.push(commit);
-        }
+        pushCommit.call(this, currentTag, commit);
       }
     }
 

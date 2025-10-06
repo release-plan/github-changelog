@@ -1,29 +1,17 @@
 {
   "solution": {
     "github-changelog": {
-      "impact": "major",
-      "oldVersion": "1.2.0",
-      "newVersion": "2.0.0",
+      "impact": "patch",
+      "oldVersion": "2.1.1",
+      "newVersion": "2.1.2",
       "constraints": [
-        {
-          "impact": "major",
-          "reason": "Appears in changelog section :boom: Breaking Change"
-        },
-        {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        },
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
-        },
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./package.json"
     }
   },
-  "description": "## Release (2025-03-05)\n\ngithub-changelog 2.0.0 (major)\n\n#### :boom: Breaking Change\n* `github-changelog`\n  * [#38](https://github.com/embroider-build/github-changelog/pull/38) drop support for node 16 ([@mansona](https://github.com/mansona))\n\n#### :rocket: Enhancement\n* `github-changelog`\n  * [#37](https://github.com/embroider-build/github-changelog/pull/37) ignore private packages ([@patricklx](https://github.com/patricklx))\n  * [#36](https://github.com/embroider-build/github-changelog/pull/36) add ignore label ([@patricklx](https://github.com/patricklx))\n\n#### :bug: Bug Fix\n* `github-changelog`\n  * [#44](https://github.com/embroider-build/github-changelog/pull/44) Revert \"use github api to find pull request for commit\" ([@mansona](https://github.com/mansona))\n\n#### :house: Internal\n* `github-changelog`\n  * [#35](https://github.com/embroider-build/github-changelog/pull/35) use github api to find pull request for commit ([@patricklx](https://github.com/patricklx))\n  * [#25](https://github.com/embroider-build/github-changelog/pull/25) add windows tests ([@mansona](https://github.com/mansona))\n  * [#32](https://github.com/embroider-build/github-changelog/pull/32) convert to vitest ([@mansona](https://github.com/mansona))\n\n#### Committers: 2\n- Chris Manson ([@mansona](https://github.com/mansona))\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2025-09-06)\n\ngithub-changelog 2.1.2 (patch)\n\n#### :bug: Bug Fix\n* `github-changelog`\n  * [#58](https://github.com/embroider-build/github-changelog/pull/58) fix issue where nested package structures aren't reported correctly ([@mansona](https://github.com/mansona))\n\n#### Committers: 1\n- Chris Manson ([@mansona](https://github.com/mansona))\n"
 }

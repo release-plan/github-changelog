@@ -1,6 +1,6 @@
 {
   "name": "github-changelog",
-  "version": "2.0.0",
+  "version": "2.1.2",
   "description": "Generate a changelog from GitHub pull requests",
   "keywords": [
     "changelog",
@@ -30,7 +30,7 @@
     "prettier": "prettier --write 'src/**/*.ts'",
     "test": "vitest",
     "test-ci": "pnpm build && pnpm test",
-    "watch": "pnpm build -- --watch"
+    "watch": "pnpm build --watch"
   },
   "prettier": {
     "arrowParens": "avoid",
@@ -62,7 +62,8 @@
     "release-plan": "^0.11.0",
     "rimraf": "3.0.2",
     "typescript": "5.0.4",
-    "vitest": "^3.0.4"
+    "vitest": "^3.0.4",
+    "execa-latest": "npm:execa@^9.6.0"
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "engines": {

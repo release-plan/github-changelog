@@ -14,6 +14,7 @@ export interface Configuration {
   ignoreCommitters: string[];
   ignoreLabel: string;
   cacheDir?: string;
+  ignoreReleases?: boolean;
   nextVersion: string | undefined;
   nextVersionFromMetadata?: boolean;
   wildcardLabel?: string;
@@ -54,12 +55,20 @@ function getPackages(rootPath: string): { name: string; path: string }[] {
   try {
     let { packages } = getPackagesSync(rootPath) as PackagesResult;
 
-    return packages
+    let result = packages
       .filter(pkg => !pkg.packageJson.private)
       .map(pkg => ({
         name: pkg.packageJson.name,
         path: pkg.dir,
       }));
+
+    /**
+     * The fixes the case where you have a root package and packages in some sub-folder. We always
+     * want other systems to match on longer package paths first so that you find the right leaf
+     * package when building a changelog.
+     */
+    result.sort((a, b) => b.path.length - a.path.length);
+    return result;
   } catch (e) {
     // Pre-existing lerna-changelog (from before the fork) behavior returns []
     // when something goes wrong with package discovery.

@@ -43,6 +43,11 @@ export async function run() {
         desc: "Infer the name of the next version from package metadata",
         default: false,
       },
+      "ignore-releases": {
+        type: "boolean",
+        desc: "Collapse all releases in the range into a single unreleased version",
+        default: false,
+      },
       repo: {
         type: "string",
         desc: "`<USER|ORG>/<PROJECT>` of the GitHub project",
@@ -74,6 +79,10 @@ export async function run() {
 
     if (argv["next-version"] !== NEXT_VERSION_DEFAULT) {
       config.nextVersion = argv["next-version"];
+    }
+
+    if (argv["ignore-releases"]) {
+      config.ignoreReleases = argv["ignore-releases"];
     }
 
     let result = await new Changelog(config).createMarkdown(options);

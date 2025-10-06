@@ -21,7 +21,7 @@ export function listTagNames(): string[] {
  * The latest reachable tag starting from HEAD
  */
 export function lastTag(): string {
-  return execa.sync("git", ["describe", "--abbrev=0", "--tags"]).stdout;
+  return execa.sync("git", ["describe", "--abbrev=0", "--tags", "--first-parent"]).stdout;
 }
 
 export interface CommitListItem {
@@ -55,7 +55,6 @@ export function listCommits(from: string, to: string = ""): CommitListItem[] {
       "--oneline",
       "--pretty=hash<%h> ref<%D> message<%s> date<%cd>",
       "--date=short",
-      "--first-parent",
       `${from}..${to}`,
     ])
     .stdout.split("\n")
