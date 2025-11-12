@@ -1,4 +1,4 @@
-import { GitHubIssueResponse, GitHubUserResponse } from "./github-api";
+import { GitHubIssueResponse, GitHubContributor } from "./github-api";
 
 export interface CommitInfo {
   commitSHA: string;
@@ -15,5 +15,5 @@ export interface Release {
   name: string;
   date: string;
   commits: CommitInfo[];
-  contributors?: GitHubUserResponse[];
+  contributors?: GitHubContributor[];
 }

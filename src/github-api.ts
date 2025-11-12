@@ -3,14 +3,21 @@ const path = require("path");
 import ConfigurationError from "./configuration-error";
 import fetch from "./fetch";
 
-interface GithubUserInfo {
+interface GitHubContributorBase {
   login: string;
+  name: string;
   html_url: string;
 }
 
-export interface GitHubUserResponse extends GithubUserInfo {
-  name: string;
+export interface GithubUserInfo extends GitHubContributorBase {
+  type: string; // "Bot" | "User"
 }
+
+export interface GithubAppInfo extends GitHubContributorBase {
+  slug: string;
+}
+
+export type GitHubContributor = GithubUserInfo | GithubAppInfo;
 
 export interface GitHubIssueResponse {
   number: number;
@@ -54,7 +61,7 @@ export default class GithubAPI {
     return this._fetch(`${prefix}/repos/${repo}/issues/${issue}`);
   }
 
-  public async getUserData(userInfo: GithubUserInfo): Promise<GitHubUserResponse> {
+  public async getUserData(userInfo: Pick<GithubUserInfo, "login" | "html_url">): Promise<GitHubContributor> {
     let login = userInfo.login;
     let path = "users";
 
@@ -63,7 +70,14 @@ export default class GithubAPI {
       login = userInfo.html_url.split("/").pop() as string;
     }
     const prefix = process.env.GITHUB_API_URL || `https://api.${this.github}`;
-    return this._fetch(`${prefix}/${path}/${login}`);
+    const data = await this._fetch(`${prefix}/${path}/${login}`);
+
+    if (login === "Copilot") {
+      // Response for Copilot is "Copilot SWE Agent" - but we prefer "Copilot"
+      data.name = "Copilot";
+    }
+
+    return data;
   }
 
   private async _fetch(url: string): Promise<any> {

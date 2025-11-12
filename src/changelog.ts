@@ -5,7 +5,7 @@ import progressBar from "./progress-bar";
 import { Configuration } from "./configuration";
 import findPullRequestId from "./find-pull-request-id";
 import * as Git from "./git";
-import GithubAPI, { GitHubUserResponse } from "./github-api";
+import GithubAPI, { GitHubContributor } from "./github-api";
 import { CommitInfo, Release } from "./interfaces";
 import MarkdownRenderer from "./markdown-renderer";
 
@@ -124,8 +124,8 @@ export default class Changelog {
     return Git.listCommits(from, to);
   }
 
-  private async getCommitters(commits: CommitInfo[]): Promise<GitHubUserResponse[]> {
-    const committers: { [id: string]: GitHubUserResponse } = {};
+  private async getCommitters(commits: CommitInfo[]): Promise<GitHubContributor[]> {
+    const committers: { [id: string]: GitHubContributor } = {};
 
     for (const commit of commits) {
       const issue = commit.githubIssue;

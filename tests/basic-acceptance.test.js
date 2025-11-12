@@ -19,7 +19,7 @@ describe.skipIf(!process.env.GITHUB_AUTH)("command line interface", () => {
 
       #### :rocket: Enhancement
       * \`github-changelog\`
-        * [#33](https://github.com/embroider-build/github-changelog/pull/33) support github enterpise url detection and env vars ([@patricklx](https://github.com/patricklx))
+        * [#33](https://github.com/release-plan/github-changelog/pull/33) support github enterpise url detection and env vars ([@patricklx](https://github.com/patricklx))
 
       #### Committers: 1
       - Patrick Pircher ([@patricklx](https://github.com/patricklx))
@@ -29,10 +29,10 @@ describe.skipIf(!process.env.GITHUB_AUTH)("command line interface", () => {
 
       #### :house: Internal
       * \`github-changelog\`
-        * [#29](https://github.com/embroider-build/github-changelog/pull/29) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))
+        * [#29](https://github.com/release-plan/github-changelog/pull/29) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))
 
       #### Committers: 1
-      - [@github-actions[bot]](https://github.com/apps/github-actions)"
+      - GitHub Actions [Bot] ([@github-actions](https://github.com/apps/github-actions))"
     `);
   });
 
@@ -46,15 +46,15 @@ describe.skipIf(!process.env.GITHUB_AUTH)("command line interface", () => {
 
       #### :rocket: Enhancement
       * \`github-changelog\`
-        * [#33](https://github.com/embroider-build/github-changelog/pull/33) support github enterpise url detection and env vars ([@patricklx](https://github.com/patricklx))
+        * [#33](https://github.com/release-plan/github-changelog/pull/33) support github enterpise url detection and env vars ([@patricklx](https://github.com/patricklx))
 
       #### :house: Internal
       * \`github-changelog\`
-        * [#29](https://github.com/embroider-build/github-changelog/pull/29) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))
+        * [#29](https://github.com/release-plan/github-changelog/pull/29) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))
 
       #### Committers: 2
-      - Patrick Pircher ([@patricklx](https://github.com/patricklx))
-      - [@github-actions[bot]](https://github.com/apps/github-actions)"
+      - GitHub Actions [Bot] ([@github-actions](https://github.com/apps/github-actions))
+      - Patrick Pircher ([@patricklx](https://github.com/patricklx))"
     `);
   });
 });
