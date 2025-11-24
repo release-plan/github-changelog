@@ -136,7 +136,7 @@ export default class Changelog {
       const shouldKeepCommiter = login && !this.ignoreCommitter(login);
 
       if (login && shouldKeepCommiter && !committers[login]) {
-        committers[login] = await this.github.getUserData(user);
+        committers[login] = this.sanitizeCommitter(await this.github.getUserData(user));
       }
     }
 
@@ -145,6 +145,15 @@ export default class Changelog {
 
   private ignoreCommitter(login: string): boolean {
     return this.config.ignoreCommitters.some((c: string) => c === login || login.indexOf(c) > -1);
+  }
+
+  private sanitizeCommitter(contributor: GitHubContributor) {
+    // Response for Copilot is "Copilot SWE Agent" - but we prefer "Copilot"
+    if (contributor.login === "Copilot") {
+      contributor.name = "Copilot";
+    }
+
+    return contributor;
   }
 
   private toCommitInfos(commits: Git.CommitListItem[]): CommitInfo[] {

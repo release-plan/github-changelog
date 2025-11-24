@@ -65,19 +65,14 @@ export default class GithubAPI {
     let login = userInfo.login;
     let path = "users";
 
+    // github API itself does not tell if contributor is an app. Best guess was to
+    // check the `html_url` for the `/apps/` segment
     if (userInfo.html_url && userInfo.html_url.includes("/apps/")) {
       path = "apps";
       login = userInfo.html_url.split("/").pop() as string;
     }
     const prefix = process.env.GITHUB_API_URL || `https://api.${this.github}`;
-    const data = await this._fetch(`${prefix}/${path}/${login}`);
-
-    if (login === "Copilot") {
-      // Response for Copilot is "Copilot SWE Agent" - but we prefer "Copilot"
-      data.name = "Copilot";
-    }
-
-    return data;
+    return await this._fetch(`${prefix}/${path}/${login}`);
   }
 
   private async _fetch(url: string): Promise<any> {
