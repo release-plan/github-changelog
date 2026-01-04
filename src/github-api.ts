@@ -4,12 +4,12 @@ import ConfigurationError from "./configuration-error";
 import fetch from "./fetch";
 
 interface GitHubContributorBase {
-  login: string;
   name: string;
   html_url: string;
 }
 
 export interface GithubUserInfo extends GitHubContributorBase {
+  login: string;
   type: string; // "Bot" | "User"
 }
 

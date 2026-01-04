@@ -212,6 +212,13 @@ describe("Changelog", () => {
             name: "User Bot",
           },
         },
+        "https://api.github.com/apps/copilot-swe-agent": {
+          body: {
+            name: "Copilot SWE Agent",
+            slug: "copilot-swe-agent",
+            html_url: "https://github.com/apps/copilot-swe-agent",
+          },
+        },
       };
       fetch.__setMockResponses(usersCache);
     });
@@ -222,6 +229,10 @@ describe("Changelog", () => {
       });
 
       const testCommits = [
+        {
+          commitSHA: "a0000005",
+          githubIssue: { user: { login: "copilot", html_url: "https://github.com/apps/copilot-swe-agent" } },
+        },
         {
           commitSHA: "a0000004",
           githubIssue: { user: { login: "test-user-1" } },
@@ -236,6 +247,11 @@ describe("Changelog", () => {
       const committers = await changelog.getCommitters(testCommits);
 
       expect(committers).toEqual([
+        {
+          name: "Copilot",
+          slug: "copilot-swe-agent",
+          html_url: "https://github.com/apps/copilot-swe-agent",
+        },
         {
           login: "test-user-1",
           html_url: "https://github.com/test-user-1",

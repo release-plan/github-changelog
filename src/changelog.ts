@@ -149,7 +149,7 @@ export default class Changelog {
 
   private sanitizeCommitter(contributor: GitHubContributor) {
     // Response for Copilot is "Copilot SWE Agent" - but we prefer "Copilot"
-    if (contributor.login === "Copilot") {
+    if (contributor.name === "Copilot SWE Agent") {
       contributor.name = "Copilot";
     }
 
