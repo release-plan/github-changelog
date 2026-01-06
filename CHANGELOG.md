@@ -1,5 +1,21 @@
 # Changelog
 
+## Release (2026-01-06)
+
+* github-changelog 2.1.3 (patch)
+
+#### :bug: Bug Fix
+* `github-changelog`
+  * [#57](https://github.com/release-plan/github-changelog/pull/57) fix `getUserData` for apps that aren't bots ([@gossi](https://github.com/gossi))
+
+#### :house: Internal
+* `github-changelog`
+  * [#61](https://github.com/release-plan/github-changelog/pull/61) update release-plan ([@mansona](https://github.com/mansona))
+
+#### Committers: 2
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Thomas Gossmann ([@gossi](https://github.com/gossi))
+
 ## Release (2025-09-06)
 
 github-changelog 2.1.2 (patch)
