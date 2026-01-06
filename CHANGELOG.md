@@ -2,6 +2,17 @@
 
 ## Release (2026-01-06)
 
+* github-changelog 2.1.4 (patch)
+
+#### :bug: Bug Fix
+* `github-changelog`
+  * [#62](https://github.com/release-plan/github-changelog/pull/62) update repo link to fix deploy ([@mansona](https://github.com/mansona))
+
+#### Committers: 1
+- Chris Manson ([@mansona](https://github.com/mansona))
+
+## Release (2026-01-06)
+
 * github-changelog 2.1.3 (patch)
 
 #### :bug: Bug Fix
