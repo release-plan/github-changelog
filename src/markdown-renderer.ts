@@ -1,4 +1,4 @@
-import { GitHubUserResponse } from "./github-api";
+import { GitHubContributor, type GithubAppInfo, type GithubUserInfo } from "./github-api";
 import { CommitInfo, Release } from "./interfaces";
 
 const UNRELEASED_TAG = "___unreleased___";
@@ -114,16 +114,19 @@ export default class MarkdownRenderer {
     }
   }
 
-  public renderContributorList(contributors: GitHubUserResponse[]) {
+  public renderContributorList(contributors: GitHubContributor[]) {
     const renderedContributors = contributors.map(contributor => `- ${this.renderContributor(contributor)}`).sort();
 
     return `#### Committers: ${contributors.length}\n${renderedContributors.join("\n")}`;
   }
 
-  public renderContributor(contributor: GitHubUserResponse): string {
-    const userNameAndLink = `[@${contributor.login}](${contributor.html_url})`;
+  public renderContributor(contributor: GitHubContributor): string {
+    const userName = (contributor as GithubAppInfo).slug ?? (contributor as GithubUserInfo).login;
+    const userNameAndLink = `[@${userName}](${contributor.html_url})`;
+
     if (contributor.name) {
-      return `${contributor.name} (${userNameAndLink})`;
+      const name = contributor.name + (!("type" in contributor) ? " [Bot]" : "");
+      return `${name} (${userNameAndLink})`;
     } else {
       return userNameAndLink;
     }

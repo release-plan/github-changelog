@@ -163,6 +163,7 @@ const usersCache = {
   "https://api.github.com/users/luke": {
     body: {
       login: "luke",
+      type: "User",
       html_url: "https://github.com/luke",
       name: "Luke Skywalker",
     },
@@ -170,6 +171,7 @@ const usersCache = {
   "https://api.github.com/users/princess-leia": {
     body: {
       login: "princess-leia",
+      type: "User",
       html_url: "https://github.com/princess-leia",
       name: "Princess Leia Organa",
     },
@@ -177,6 +179,7 @@ const usersCache = {
   "https://api.github.com/users/vader": {
     body: {
       login: "vader",
+      type: "User",
       html_url: "https://github.com/vader",
       name: "Darth Vader",
     },
@@ -184,6 +187,7 @@ const usersCache = {
   "https://api.github.com/users/gtarkin": {
     body: {
       login: "gtarkin",
+      type: "User",
       html_url: "https://github.com/gtarkin",
       name: "Governor Tarkin",
     },
@@ -191,6 +195,7 @@ const usersCache = {
   "https://api.github.com/users/han-solo": {
     body: {
       login: "han-solo",
+      type: "User",
       html_url: "https://github.com/han-solo",
       name: "Han Solo",
     },
@@ -198,6 +203,7 @@ const usersCache = {
   "https://api.github.com/users/chewbacca": {
     body: {
       login: "chewbacca",
+      type: "User",
       html_url: "https://github.com/chewbacca",
       name: "Chwebacca",
     },
@@ -205,6 +211,7 @@ const usersCache = {
   "https://api.github.com/users/rd-d2": {
     body: {
       login: "rd-d2",
+      type: "User",
       html_url: "https://github.com/rd-d2",
       name: "R2-D2",
     },
@@ -212,6 +219,7 @@ const usersCache = {
   "https://api.github.com/users/c-3po": {
     body: {
       login: "c-3po",
+      type: "User",
       html_url: "https://github.com/c-3po",
       name: "C-3PO",
     },
@@ -327,7 +335,7 @@ describe("createMarkdown", () => {
 
   describe("ignore config", () => {
     it("ignores PRs from bot users even if they were not the (merge) committer", async () => {
-      git.changedPaths.mockImplementation((sha) => {
+      git.changedPaths.mockImplementation(sha => {
         return listOfPackagesForEachCommit[sha];
       });
       git.lastTag.mockImplementation(() => "v8.0.0");
@@ -351,7 +359,7 @@ describe("createMarkdown", () => {
 
   describe("single tags", () => {
     it("outputs correct changelog", async () => {
-      git.changedPaths.mockImplementation((sha) => listOfPackagesForEachCommit[sha]);
+      git.changedPaths.mockImplementation(sha => listOfPackagesForEachCommit[sha]);
       git.lastTag.mockImplementation(() => "v8.0.0");
       git.listCommits.mockImplementation(() => listOfCommits);
       git.listTagNames.mockImplementation(() => listOfTags);
@@ -371,7 +379,7 @@ describe("createMarkdown", () => {
 
   describe("multiple tags", () => {
     it("outputs correct changelog", async () => {
-      git.changedPaths.mockImplementation((sha) => listOfPackagesForEachCommit[sha]);
+      git.changedPaths.mockImplementation(sha => listOfPackagesForEachCommit[sha]);
       git.lastTag.mockImplementation(() => "v8.0.0");
       git.listCommits.mockImplementation(() => [
         {
@@ -424,7 +432,7 @@ describe("createMarkdown", () => {
 
   describe("single project", () => {
     it("outputs correct changelog", async () => {
-      git.changedPaths.mockImplementation((sha) => listOfFileForEachCommit[sha]);
+      git.changedPaths.mockImplementation(sha => listOfFileForEachCommit[sha]);
       git.lastTag.mockImplementation(() => "v8.0.0");
       git.listCommits.mockImplementation(() => listOfCommits);
       git.listTagNames.mockImplementation(() => listOfTags);
@@ -449,7 +457,7 @@ describe("createMarkdown", () => {
         documentation_url: "https://developer.github.com/v3",
       };
       beforeEach(async () => {
-        git.changedPaths.mockImplementation((sha) => listOfFileForEachCommit[sha]);
+        git.changedPaths.mockImplementation(sha => listOfFileForEachCommit[sha]);
         git.lastTag.mockImplementation(() => "v8.0.0");
         git.listCommits.mockImplementation(() => listOfCommits);
         git.listTagNames.mockImplementation(() => listOfTags);

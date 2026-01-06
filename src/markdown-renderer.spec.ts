@@ -1,3 +1,4 @@
+import type { GithubAppInfo, GithubUserInfo } from "./github-api";
 import { CommitInfo, Release } from "./interfaces";
 import MarkdownRenderer from "./markdown-renderer";
 
@@ -120,12 +121,14 @@ describe("MarkdownRenderer", () => {
       const user1 = {
         login: "hzoo",
         name: "",
+        type: "User",
         html_url: "https://github.com/hzoo",
       };
 
       const user2 = {
         login: "Turbo87",
         name: "Tobias Bieniek",
+        type: "User",
         html_url: "https://github.com/Turbo87",
       };
 
@@ -140,6 +143,7 @@ describe("MarkdownRenderer", () => {
       const result = renderer().renderContributor({
         login: "foo",
         name: "",
+        type: "User",
         html_url: "http://github.com/foo",
       });
 
@@ -150,10 +154,22 @@ describe("MarkdownRenderer", () => {
       const result = renderer().renderContributor({
         login: "foo",
         name: "Foo Bar",
+        type: "User",
         html_url: "http://github.com/foo",
       });
 
       expect(result).toEqual("Foo Bar ([@foo](http://github.com/foo))");
+    });
+
+    it(`renders Copilot`, () => {
+      const result = renderer().renderContributor({
+        login: "Copilot",
+        name: "Copilot",
+        slug: "copilot-swe-agent",
+        html_url: "https://github.com/apps/copilot-swe-agent",
+      } as GithubAppInfo);
+
+      expect(result).toEqual("Copilot [Bot] ([@copilot-swe-agent](https://github.com/apps/copilot-swe-agent))");
     });
   });
 
@@ -230,7 +246,7 @@ describe("MarkdownRenderer", () => {
             categories: [":rocket: New Feature"],
           },
         ],
-        contributors: [{ name: "Henry", login: "hzoo", html_url: "http://hzoo.com" }],
+        contributors: [{ name: "Henry", login: "hzoo", type: "User", html_url: "http://hzoo.com" }],
       };
       const options = {
         categories: [":rocket: New Feature"],

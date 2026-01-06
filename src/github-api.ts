@@ -3,11 +3,21 @@ const path = require("path");
 import ConfigurationError from "./configuration-error";
 import fetch from "./fetch";
 
-export interface GitHubUserResponse {
-  login: string;
+interface GitHubContributorBase {
   name: string;
   html_url: string;
 }
+
+export interface GithubUserInfo extends GitHubContributorBase {
+  login: string;
+  type: string; // "Bot" | "User"
+}
+
+export interface GithubAppInfo extends GitHubContributorBase {
+  slug: string;
+}
+
+export type GitHubContributor = GithubUserInfo | GithubAppInfo;
 
 export interface GitHubIssueResponse {
   number: number;
@@ -18,10 +28,7 @@ export interface GitHubIssueResponse {
   labels: Array<{
     name: string;
   }>;
-  user: {
-    login: string;
-    html_url: string;
-  };
+  user: GithubUserInfo;
 }
 
 export interface Options {
@@ -54,9 +61,18 @@ export default class GithubAPI {
     return this._fetch(`${prefix}/repos/${repo}/issues/${issue}`);
   }
 
-  public async getUserData(login: string): Promise<GitHubUserResponse> {
+  public async getUserData(userInfo: Pick<GithubUserInfo, "login" | "html_url">): Promise<GitHubContributor> {
+    let login = userInfo.login;
+    let path = "users";
+
+    // github API itself does not tell if contributor is an app. Best guess was to
+    // check the `html_url` for the `/apps/` segment
+    if (userInfo.html_url && userInfo.html_url.includes("/apps/")) {
+      path = "apps";
+      login = userInfo.html_url.split("/").pop() as string;
+    }
     const prefix = process.env.GITHUB_API_URL || `https://api.${this.github}`;
-    return this._fetch(`${prefix}/users/${login}`);
+    return await this._fetch(`${prefix}/${path}/${login}`);
   }
 
   private async _fetch(url: string): Promise<any> {

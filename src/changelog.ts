@@ -5,7 +5,7 @@ import progressBar from "./progress-bar";
 import { Configuration } from "./configuration";
 import findPullRequestId from "./find-pull-request-id";
 import * as Git from "./git";
-import GithubAPI, { GitHubUserResponse } from "./github-api";
+import GithubAPI, { GitHubContributor } from "./github-api";
 import { CommitInfo, Release } from "./interfaces";
 import MarkdownRenderer from "./markdown-renderer";
 
@@ -124,17 +124,19 @@ export default class Changelog {
     return Git.listCommits(from, to);
   }
 
-  private async getCommitters(commits: CommitInfo[]): Promise<GitHubUserResponse[]> {
-    const committers: { [id: string]: GitHubUserResponse } = {};
+  private async getCommitters(commits: CommitInfo[]): Promise<GitHubContributor[]> {
+    const committers: { [id: string]: GitHubContributor } = {};
 
     for (const commit of commits) {
       const issue = commit.githubIssue;
-      const login = issue && issue.user && issue.user.login;
+      const user = issue && issue.user;
+      const login = user && user.login;
       // If a list of `ignoreCommitters` is provided in the lerna.json config
       // check if the current committer should be kept or not.
       const shouldKeepCommiter = login && !this.ignoreCommitter(login);
+
       if (login && shouldKeepCommiter && !committers[login]) {
-        committers[login] = await this.github.getUserData(login);
+        committers[login] = this.sanitizeCommitter(await this.github.getUserData(user));
       }
     }
 
@@ -143,6 +145,15 @@ export default class Changelog {
 
   private ignoreCommitter(login: string): boolean {
     return this.config.ignoreCommitters.some((c: string) => c === login || login.indexOf(c) > -1);
+  }
+
+  private sanitizeCommitter(contributor: GitHubContributor) {
+    // Response for Copilot is "Copilot SWE Agent" - but we prefer "Copilot"
+    if (contributor.name === "Copilot SWE Agent") {
+      contributor.name = "Copilot";
+    }
+
+    return contributor;
   }
 
   private toCommitInfos(commits: Git.CommitListItem[]): CommitInfo[] {
