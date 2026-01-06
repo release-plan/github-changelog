@@ -6,13 +6,13 @@
     "changelog",
     "github"
   ],
-  "homepage": "https://github.com/embroider-build/github-changelog#readme",
+  "homepage": "https://github.com/release-plan/github-changelog#readme",
   "bugs": {
-    "url": "https://github.com/embroider-build/github-changelog/issues"
+    "url": "https://github.com/release-plan/github-changelog/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/embroider-build/github-changelog.git"
+    "url": "git+https://github.com/release-plan/github-changelog.git"
   },
   "license": "MIT",
   "author": "Bo Borgerson <gigabo@gmail.com>",
@@ -75,7 +75,7 @@
     }
   },
   "changelog": {
-    "repo": "embroider-build/github-changelog",
+    "repo": "release-plan/github-changelog",
     "labels": {
       "breaking": ":boom: Breaking Change",
       "enhancement": ":rocket: Enhancement",
