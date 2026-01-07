@@ -191,8 +191,12 @@ export default class Changelog {
     await pMap(
       commitInfos,
       async (commitInfo: CommitInfo) => {
-        if (commitInfo.issueNumber) {
-          commitInfo.githubIssue = await this.github.getIssueData(this.config.repo, commitInfo.issueNumber);
+        try {
+          if (commitInfo.issueNumber) {
+            commitInfo.githubIssue = await this.github.getIssueData(this.config.repo, commitInfo.issueNumber);
+          }
+        } catch (err: any) {
+          console.error(`Error getting issue data: ${err.message}`);
         }
 
         progressBar.tick();

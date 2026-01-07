@@ -86,7 +86,12 @@ export default class GithubAPI {
     if (res.ok) {
       return parsedResponse;
     }
-    throw new ConfigurationError(`Fetch error: ${res.statusText}.\n${JSON.stringify(parsedResponse)}`);
+
+    if (res.status === 404) {
+      throw new ConfigurationError(`Not Found [${url}]`);
+    }
+
+    throw new ConfigurationError(`Fetch error [${url}]: ${res.statusText}.\n${JSON.stringify(parsedResponse)}`);
   }
 
   protected getAuthToken(): string {
