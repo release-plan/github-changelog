@@ -1,5 +1,5 @@
-const pMap = require("p-map");
-const { resolve, sep } = require("path");
+import pMap from "p-map";
+import { resolve, sep } from "node:path";
 
 import progressBar from "./progress-bar";
 import { Configuration } from "./configuration";

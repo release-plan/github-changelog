@@ -1,6 +1,7 @@
-import chalk = require("chalk");
+import chalk from "chalk";
 
 import { highlight } from "cli-highlight";
+import yargs from "yargs";
 
 import Changelog from "./changelog";
 import { load as loadConfig } from "./configuration";
@@ -9,9 +10,7 @@ import ConfigurationError from "./configuration-error";
 const NEXT_VERSION_DEFAULT = "Unreleased";
 
 export async function run() {
-  const yargs = require("yargs");
-
-  const argv = yargs
+  const argv = yargs(process.argv.slice(2))
     .usage("github-changelog [options]")
     .options({
       from: {
@@ -63,8 +62,7 @@ export async function run() {
       "create a changelog for the changes in all tags within the given range"
     )
     .epilog("For more information, see https://github.com/embroider-build/github-changelog")
-    .wrap(Math.min(100, yargs.terminalWidth()))
-    .parse();
+    .parseSync();
 
   let options = {
     tagFrom: argv["from"] || argv["tag-from"],

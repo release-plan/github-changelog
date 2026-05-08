@@ -1,7 +1,7 @@
-const fs = require("fs");
-const path = require("path");
-const hostedGitInfo = require("hosted-git-info");
-const { getPackagesSync } = require("@manypkg/get-packages");
+import fs from "node:fs";
+import path from "node:path";
+import hostedGitInfo from "hosted-git-info";
+import { getPackagesSync } from "@manypkg/get-packages";
 
 import ConfigurationError from "./configuration-error";
 import { getRootPath } from "./git";
@@ -53,7 +53,7 @@ interface PackagesResult {
 
 function getPackages(rootPath: string): { name: string; path: string }[] {
   try {
-    let { packages } = getPackagesSync(rootPath) as PackagesResult;
+    let { packages } = getPackagesSync(rootPath);
 
     let result = packages
       .filter(pkg => !pkg.packageJson.private)
@@ -164,14 +164,14 @@ export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): C
 function fromLernaConfig(rootPath: string): Partial<Configuration> | undefined {
   const lernaPath = path.join(rootPath, "lerna.json");
   if (fs.existsSync(lernaPath)) {
-    return JSON.parse(fs.readFileSync(lernaPath)).changelog;
+    return JSON.parse(fs.readFileSync(lernaPath, 'utf8')).changelog;
   }
 }
 
 function fromPackageConfig(rootPath: string): Partial<Configuration> | undefined {
   const pkgPath = path.join(rootPath, "package.json");
   if (fs.existsSync(pkgPath)) {
-    return JSON.parse(fs.readFileSync(pkgPath)).changelog;
+    return JSON.parse(fs.readFileSync(pkgPath, 'utf8')).changelog;
   }
 }
 
@@ -181,7 +181,7 @@ function findRepo(rootPath: string): string | undefined {
     return;
   }
 
-  const pkg = JSON.parse(fs.readFileSync(pkgPath));
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
   if (!pkg.repository) {
     return;
   }
@@ -193,8 +193,8 @@ function findNextVersion(rootPath: string): string | undefined {
   const pkgPath = path.join(rootPath, "package.json");
   const lernaPath = path.join(rootPath, "lerna.json");
 
-  const pkg = fs.existsSync(pkgPath) ? JSON.parse(fs.readFileSync(pkgPath)) : {};
-  const lerna = fs.existsSync(lernaPath) ? JSON.parse(fs.readFileSync(lernaPath)) : {};
+  const pkg = fs.existsSync(pkgPath) ? JSON.parse(fs.readFileSync(pkgPath, 'utf8')) : {};
+  const lerna = fs.existsSync(lernaPath) ? JSON.parse(fs.readFileSync(lernaPath, 'utf8')) : {};
 
   return pkg.version ? `v${pkg.version}` : lerna.version ? `v${lerna.version}` : undefined;
 }

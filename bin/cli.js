@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-"use strict";
-
-var cli = require("../lib/cli");
+import cli from "../lib/cli.js";
 
 cli.run();

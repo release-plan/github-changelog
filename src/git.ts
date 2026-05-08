@@ -1,4 +1,4 @@
-const execa = require("execa");
+import execa from "execa";
 
 export function getRootPath() {
   const cwd = process.cwd();
@@ -60,5 +60,5 @@ export function listCommits(from: string, to: string = ""): CommitListItem[] {
     .stdout.split("\n")
     .filter(Boolean)
     .map(parseLogMessage)
-    .filter(Boolean);
+    .filter(Boolean) as CommitListItem[];
 }

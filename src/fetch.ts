@@ -1,3 +1,3 @@
-const fetch = require("make-fetch-happen");
+import fetch from "make-fetch-happen";
 
 export default fetch;

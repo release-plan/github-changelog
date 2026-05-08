@@ -1,4 +1,4 @@
-const path = require("path");
+import path from "path";
 
 import ConfigurationError from "./configuration-error";
 import fetch from "./fetch";
