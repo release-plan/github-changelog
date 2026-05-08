@@ -1,4 +1,4 @@
-import GithubAPI from './github-api';
+import GithubAPI from './github-api.js';
 import { describe, it, expect } from 'vitest';
 
 describe('github api', function () {

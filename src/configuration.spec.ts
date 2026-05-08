@@ -2,8 +2,8 @@ import os from 'os';
 import fs from 'fs-extra';
 import path from 'path';
 
-import { findRepoFromPkg, fromPath } from './configuration';
-import ConfigurationError from './configuration-error';
+import { findRepoFromPkg, fromPath } from './configuration.js';
+import ConfigurationError from './configuration-error.js';
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 

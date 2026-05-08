@@ -1,4 +1,4 @@
-import ConfigurationError from './configuration-error';
+import ConfigurationError from './configuration-error.js';
 
 import { describe, it, expect } from 'vitest';
 

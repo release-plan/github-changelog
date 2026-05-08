@@ -1,13 +1,13 @@
 import pMap from 'p-map';
 import { resolve, sep } from 'node:path';
 
-import progressBar from './progress-bar';
-import { Configuration } from './configuration';
-import findPullRequestId from './find-pull-request-id';
-import * as Git from './git';
-import GithubAPI, { GitHubContributor } from './github-api';
-import { CommitInfo, Release } from './interfaces';
-import MarkdownRenderer from './markdown-renderer';
+import progressBar from './progress-bar.js';
+import { Configuration } from './configuration.js';
+import findPullRequestId from './find-pull-request-id.js';
+import * as Git from './git.js';
+import GithubAPI, { GitHubContributor } from './github-api.js';
+import { CommitInfo, Release } from './interfaces.js';
+import MarkdownRenderer from './markdown-renderer.js';
 
 const UNRELEASED_TAG = '___unreleased___';
 

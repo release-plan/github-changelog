@@ -1,5 +1,5 @@
-import { GitHubContributor, type GithubAppInfo, type GithubUserInfo } from './github-api';
-import { CommitInfo, Release } from './interfaces';
+import { GitHubContributor, type GithubAppInfo, type GithubUserInfo } from './github-api.js';
+import { CommitInfo, Release } from './interfaces.js';
 
 const UNRELEASED_TAG = '___unreleased___';
 const COMMIT_FIX_REGEX = /(fix|close|resolve)(e?s|e?d)? [T#](\d+)/i;

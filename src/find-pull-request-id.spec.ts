@@ -1,4 +1,4 @@
-import findPullRequestId from './find-pull-request-id';
+import findPullRequestId from './find-pull-request-id.js';
 
 import { describe, it, expect } from 'vitest';
 

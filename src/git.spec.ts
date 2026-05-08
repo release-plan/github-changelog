@@ -1,4 +1,4 @@
-import { parseLogMessage } from './git';
+import { parseLogMessage } from './git.js';
 import { describe, it, expect } from 'vitest';
 
 const messages = [

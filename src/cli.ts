@@ -3,9 +3,9 @@ import chalk from 'chalk';
 import { highlight } from 'cli-highlight';
 import yargs from 'yargs';
 
-import Changelog from './changelog';
-import { load as loadConfig } from './configuration';
-import ConfigurationError from './configuration-error';
+import Changelog from './changelog.js';
+import { load as loadConfig } from './configuration.js';
+import ConfigurationError from './configuration-error.js';
 
 const NEXT_VERSION_DEFAULT = 'Unreleased';
 

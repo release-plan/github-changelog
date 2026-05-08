@@ -1,7 +1,7 @@
 import path from 'path';
 
-import ConfigurationError from './configuration-error';
-import fetch from './fetch';
+import ConfigurationError from './configuration-error.js';
+import fetch from './fetch.js';
 
 interface GitHubContributorBase {
   name: string;

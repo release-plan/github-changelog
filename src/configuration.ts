@@ -3,8 +3,8 @@ import path from 'node:path';
 import hostedGitInfo from 'hosted-git-info';
 import { getPackagesSync } from '@manypkg/get-packages';
 
-import ConfigurationError from './configuration-error';
-import { getRootPath } from './git';
+import ConfigurationError from './configuration-error.js';
+import { getRootPath } from './git.js';
 
 export interface Configuration {
   repo: string;

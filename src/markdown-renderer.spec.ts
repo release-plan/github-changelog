@@ -1,6 +1,6 @@
-import type { GithubAppInfo } from './github-api';
-import { CommitInfo, Release } from './interfaces';
-import MarkdownRenderer from './markdown-renderer';
+import type { GithubAppInfo } from './github-api.js';
+import { CommitInfo, Release } from './interfaces.js';
+import MarkdownRenderer from './markdown-renderer.js';
 
 import { describe, it, expect } from 'vitest';
 
