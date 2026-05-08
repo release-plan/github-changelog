@@ -2,6 +2,21 @@
 
 ## Release (2026-05-08)
 
+* github-changelog 3.1.0 (minor)
+
+#### :rocket: Enhancement
+* `github-changelog`
+  * [#75](https://github.com/release-plan/github-changelog/pull/75) update execa to v9 ([@mansona](https://github.com/mansona))
+
+#### :bug: Bug Fix
+* `github-changelog`
+  * [#72](https://github.com/release-plan/github-changelog/pull/72) publish fewer files by adding a files entry to package.json ([@mansona](https://github.com/mansona))
+
+#### Committers: 1
+- Chris Manson ([@mansona](https://github.com/mansona))
+
+## Release (2026-05-08)
+
 * github-changelog 3.0.0 (major)
 
 #### :boom: Breaking Change

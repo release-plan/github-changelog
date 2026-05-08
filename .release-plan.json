@@ -1,26 +1,22 @@
 {
   "solution": {
     "github-changelog": {
-      "impact": "major",
-      "oldVersion": "2.1.4",
-      "newVersion": "3.0.0",
+      "impact": "minor",
+      "oldVersion": "3.0.0",
+      "newVersion": "3.1.0",
       "tagName": "latest",
       "constraints": [
         {
-          "impact": "major",
-          "reason": "Appears in changelog section :boom: Breaking Change"
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
         },
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
-        },
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./package.json"
     }
   },
-  "description": "## Release (2026-05-08)\n\n* github-changelog 3.0.0 (major)\n\n#### :boom: Breaking Change\n* `github-changelog`\n  * [#70](https://github.com/release-plan/github-changelog/pull/70) convert to esm only ([@mansona](https://github.com/mansona))\n  * [#67](https://github.com/release-plan/github-changelog/pull/67) drop support for node < 22 ([@mansona](https://github.com/mansona))\n\n#### :bug: Bug Fix\n* `github-changelog`\n  * [#66](https://github.com/release-plan/github-changelog/pull/66) Update `make-fetch-happen` to fix security issues ([@mkszepp](https://github.com/mkszepp))\n\n#### :house: Internal\n* `github-changelog`\n  * [#71](https://github.com/release-plan/github-changelog/pull/71) update release-plan ([@mansona](https://github.com/mansona))\n  * [#69](https://github.com/release-plan/github-changelog/pull/69) update pnpm ([@mansona](https://github.com/mansona))\n\n#### Committers: 2\n- Chris Manson ([@mansona](https://github.com/mansona))\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n"
+  "description": "## Release (2026-05-08)\n\n* github-changelog 3.1.0 (minor)\n\n#### :rocket: Enhancement\n* `github-changelog`\n  * [#75](https://github.com/release-plan/github-changelog/pull/75) update execa to v9 ([@mansona](https://github.com/mansona))\n\n#### :bug: Bug Fix\n* `github-changelog`\n  * [#72](https://github.com/release-plan/github-changelog/pull/72) publish fewer files by adding a files entry to package.json ([@mansona](https://github.com/mansona))\n\n#### Committers: 1\n- Chris Manson ([@mansona](https://github.com/mansona))\n"
 }
