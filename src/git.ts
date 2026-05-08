@@ -1,8 +1,8 @@
-import execa from 'execa';
+import { execa, execaSync } from 'execa';
 
 export function getRootPath() {
   const cwd = process.cwd();
-  return execa.sync('git', ['rev-parse', '--show-toplevel'], { cwd }).stdout;
+  return execaSync('git', ['rev-parse', '--show-toplevel'], { cwd }).stdout;
 }
 
 export async function changedPaths(sha: string): Promise<string[]> {
@@ -14,14 +14,14 @@ export async function changedPaths(sha: string): Promise<string[]> {
  * All existing tags in the repository
  */
 export function listTagNames(): string[] {
-  return execa.sync('git', ['tag']).stdout.split('\n').filter(Boolean);
+  return execaSync('git', ['tag']).stdout.split('\n').filter(Boolean);
 }
 
 /**
  * The latest reachable tag starting from HEAD
  */
 export function lastTag(): string {
-  return execa.sync('git', ['describe', '--abbrev=0', '--tags', '--first-parent']).stdout;
+  return execaSync('git', ['describe', '--abbrev=0', '--tags', '--first-parent']).stdout;
 }
 
 export interface CommitListItem {
@@ -49,14 +49,13 @@ export function parseLogMessage(commit: string): CommitListItem | null {
 export function listCommits(from: string, to: string = ''): CommitListItem[] {
   // Prints "hash<short-hash> ref<ref-name> message<summary> date<date>"
   // This format is used in `getCommitInfos` for easily analize the commit.
-  return execa
-    .sync('git', [
-      'log',
-      '--oneline',
-      '--pretty=hash<%h> ref<%D> message<%s> date<%cd>',
-      '--date=short',
-      `${from}..${to}`,
-    ])
+  return execaSync('git', [
+    'log',
+    '--oneline',
+    '--pretty=hash<%h> ref<%D> message<%s> date<%cd>',
+    '--date=short',
+    `${from}..${to}`,
+  ])
     .stdout.split('\n')
     .filter(Boolean)
     .map(parseLogMessage)
