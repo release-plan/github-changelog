@@ -1,5 +1,27 @@
 # Changelog
 
+## Release (2026-05-08)
+
+* github-changelog 3.0.0 (major)
+
+#### :boom: Breaking Change
+* `github-changelog`
+  * [#70](https://github.com/release-plan/github-changelog/pull/70) convert to esm only ([@mansona](https://github.com/mansona))
+  * [#67](https://github.com/release-plan/github-changelog/pull/67) drop support for node < 22 ([@mansona](https://github.com/mansona))
+
+#### :bug: Bug Fix
+* `github-changelog`
+  * [#66](https://github.com/release-plan/github-changelog/pull/66) Update `make-fetch-happen` to fix security issues ([@mkszepp](https://github.com/mkszepp))
+
+#### :house: Internal
+* `github-changelog`
+  * [#71](https://github.com/release-plan/github-changelog/pull/71) update release-plan ([@mansona](https://github.com/mansona))
+  * [#69](https://github.com/release-plan/github-changelog/pull/69) update pnpm ([@mansona](https://github.com/mansona))
+
+#### Committers: 2
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## Release (2026-01-06)
 
 * github-changelog 2.1.4 (patch)
