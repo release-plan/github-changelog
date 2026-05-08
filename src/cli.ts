@@ -1,97 +1,95 @@
-import chalk = require("chalk");
+import chalk from 'chalk';
 
-import { highlight } from "cli-highlight";
+import { highlight } from 'cli-highlight';
+import yargs from 'yargs';
 
-import Changelog from "./changelog";
-import { load as loadConfig } from "./configuration";
-import ConfigurationError from "./configuration-error";
+import Changelog from './changelog.js';
+import { load as loadConfig } from './configuration.js';
+import ConfigurationError from './configuration-error.js';
 
-const NEXT_VERSION_DEFAULT = "Unreleased";
+const NEXT_VERSION_DEFAULT = 'Unreleased';
 
 export async function run() {
-  const yargs = require("yargs");
-
-  const argv = yargs
-    .usage("github-changelog [options]")
+  const argv = yargs(process.argv.slice(2))
+    .usage('github-changelog [options]')
     .options({
       from: {
-        type: "string",
-        desc: "A git tag or commit hash that determines the lower bound of the range of commits",
-        defaultDescription: "latest tagged commit",
+        type: 'string',
+        desc: 'A git tag or commit hash that determines the lower bound of the range of commits',
+        defaultDescription: 'latest tagged commit',
       },
       to: {
-        type: "string",
-        desc: "A git tag or commit hash that determines the upper bound of the range of commits",
+        type: 'string',
+        desc: 'A git tag or commit hash that determines the upper bound of the range of commits',
       },
-      "tag-from": {
+      'tag-from': {
         hidden: true,
-        type: "string",
-        desc: "A git tag that determines the lower bound of the range of commits (defaults to last available)",
+        type: 'string',
+        desc: 'A git tag that determines the lower bound of the range of commits (defaults to last available)',
       },
-      "tag-to": {
+      'tag-to': {
         hidden: true,
-        type: "string",
-        desc: "A git tag that determines the upper bound of the range of commits",
+        type: 'string',
+        desc: 'A git tag that determines the upper bound of the range of commits',
       },
-      "next-version": {
-        type: "string",
-        desc: "The name of the next version",
+      'next-version': {
+        type: 'string',
+        desc: 'The name of the next version',
         default: NEXT_VERSION_DEFAULT,
       },
-      "next-version-from-metadata": {
-        type: "boolean",
-        desc: "Infer the name of the next version from package metadata",
+      'next-version-from-metadata': {
+        type: 'boolean',
+        desc: 'Infer the name of the next version from package metadata',
         default: false,
       },
-      "ignore-releases": {
-        type: "boolean",
-        desc: "Collapse all releases in the range into a single unreleased version",
+      'ignore-releases': {
+        type: 'boolean',
+        desc: 'Collapse all releases in the range into a single unreleased version',
         default: false,
       },
       repo: {
-        type: "string",
-        desc: "`<USER|ORG>/<PROJECT>` of the GitHub project",
-        defaultDescription: "inferred from the `package.json` file",
+        type: 'string',
+        desc: '`<USER|ORG>/<PROJECT>` of the GitHub project',
+        defaultDescription: 'inferred from the `package.json` file',
       },
     })
     .example(
-      "github-changelog",
-      'create a changelog for the changes after the latest available tag, under "Unreleased" section'
+      'github-changelog',
+      'create a changelog for the changes after the latest available tag, under "Unreleased" section',
     )
     .example(
-      "github-changelog --from=0.1.0 --to=0.3.0",
-      "create a changelog for the changes in all tags within the given range"
+      'github-changelog --from=0.1.0 --to=0.3.0',
+      'create a changelog for the changes in all tags within the given range',
     )
-    .epilog("For more information, see https://github.com/embroider-build/github-changelog")
-    .wrap(Math.min(100, yargs.terminalWidth()))
-    .parse();
+    .epilog('For more information, see https://github.com/embroider-build/github-changelog')
+    .parseSync();
 
-  let options = {
-    tagFrom: argv["from"] || argv["tag-from"],
-    tagTo: argv["to"] || argv["tag-to"],
+  const options = {
+    tagFrom: argv['from'] || argv['tag-from'],
+    tagTo: argv['to'] || argv['tag-to'],
   };
 
   try {
-    let config = loadConfig({
-      nextVersionFromMetadata: argv["next-version-from-metadata"],
+    const config = loadConfig({
+      nextVersionFromMetadata: argv['next-version-from-metadata'],
       repo: argv.repo,
     });
 
-    if (argv["next-version"] !== NEXT_VERSION_DEFAULT) {
-      config.nextVersion = argv["next-version"];
+    if (argv['next-version'] !== NEXT_VERSION_DEFAULT) {
+      config.nextVersion = argv['next-version'];
     }
 
-    if (argv["ignore-releases"]) {
-      config.ignoreReleases = argv["ignore-releases"];
+    if (argv['ignore-releases']) {
+      config.ignoreReleases = argv['ignore-releases'];
     }
 
-    let result = await new Changelog(config).createMarkdown(options);
+    const result = await new Changelog(config).createMarkdown(options);
 
-    let highlighted = highlight(result, {
-      language: "Markdown",
+    const highlighted = highlight(result, {
+      language: 'Markdown',
       theme: {
         section: chalk.bold,
-        string: chalk.hex("#0366d6"),
+        string: chalk.hex('#0366d6'),
         link: chalk.dim,
       },
     });
@@ -101,7 +99,7 @@ export async function run() {
     if (e instanceof ConfigurationError) {
       console.log(chalk.red(e.message));
     } else {
-      console.log(chalk.red((e as any).stack));
+      console.log(chalk.red((e as Error).stack));
     }
 
     process.exitCode = 1;

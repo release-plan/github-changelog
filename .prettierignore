@@ -1,0 +1,8 @@
+# compiled output
+/lib/
+
+# misc
+/coverage/
+/pnpm-lock.yaml
+*.html
+CHANGELOG.md

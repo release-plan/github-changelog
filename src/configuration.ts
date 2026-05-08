@@ -1,10 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const hostedGitInfo = require("hosted-git-info");
-const { getPackagesSync } = require("@manypkg/get-packages");
+import fs from 'node:fs';
+import path from 'node:path';
+import hostedGitInfo from 'hosted-git-info';
+import { getPackagesSync } from '@manypkg/get-packages';
 
-import ConfigurationError from "./configuration-error";
-import { getRootPath } from "./git";
+import ConfigurationError from './configuration-error.js';
+import { getRootPath } from './git.js';
 
 export interface Configuration {
   repo: string;
@@ -27,35 +27,15 @@ export interface ConfigLoaderOptions {
 }
 
 export function load(options: ConfigLoaderOptions = {}): Configuration {
-  let rootPath = getRootPath();
+  const rootPath = getRootPath();
   return fromPath(rootPath, options);
-}
-
-interface PackageJson {
-  type: boolean;
-  private: boolean;
-  name: string;
-}
-
-interface Package {
-  dir: string;
-  relativeDir: string;
-  packageJson: PackageJson;
-}
-
-interface PackagesResult {
-  tool: {
-    type: "pnpm" | "yarn" | "npm";
-  };
-  packages: Package[];
-  rootPackage: Package;
 }
 
 function getPackages(rootPath: string): { name: string; path: string }[] {
   try {
-    let { packages } = getPackagesSync(rootPath) as PackagesResult;
+    const { packages } = getPackagesSync(rootPath);
 
-    let result = packages
+    const result = packages
       .filter(pkg => !pkg.packageJson.private)
       .map(pkg => ({
         name: pkg.packageJson.name,
@@ -87,14 +67,15 @@ function getPackages(rootPath: string): { name: string; path: string }[] {
 
 export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): Configuration {
   // Step 1: load partial config from `package.json` or `lerna.json`
-  let config = fromPackageConfig(rootPath) || fromLernaConfig(rootPath) || {};
+  const config = fromPackageConfig(rootPath) || fromLernaConfig(rootPath) || {};
 
   if (options.repo) {
     config.repo = options.repo;
   }
 
   // Step 2: fill partial config with defaults
-  let { repo, nextVersion, labels, cacheDir, ignoreCommitters, ignoreLabel, wildcardLabel, github } = config;
+  const { cacheDir, github } = config;
+  let { repo, nextVersion, labels, ignoreCommitters, ignoreLabel, wildcardLabel } = config;
 
   const packages = getPackages(rootPath);
 
@@ -115,11 +96,11 @@ export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): C
 
   if (!labels) {
     labels = {
-      breaking: ":boom: Breaking Change",
-      enhancement: ":rocket: Enhancement",
-      bug: ":bug: Bug Fix",
-      documentation: ":memo: Documentation",
-      internal: ":house: Internal",
+      breaking: ':boom: Breaking Change',
+      enhancement: ':rocket: Enhancement',
+      bug: ':bug: Bug Fix',
+      documentation: ':memo: Documentation',
+      internal: ':house: Internal',
     };
   }
 
@@ -128,23 +109,23 @@ export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): C
   }
 
   if (wildcardLabel && !labels[wildcardLabel]) {
-    labels[wildcardLabel] = ":present: Additional updates";
+    labels[wildcardLabel] = ':present: Additional updates';
   }
 
   if (!ignoreCommitters) {
     ignoreCommitters = [
-      "dependabot-bot",
-      "dependabot[bot]",
-      "dependabot-preview[bot]",
-      "greenkeeperio-bot",
-      "greenkeeper[bot]",
-      "renovate-bot",
-      "renovate[bot]",
+      'dependabot-bot',
+      'dependabot[bot]',
+      'dependabot-preview[bot]',
+      'greenkeeperio-bot',
+      'greenkeeper[bot]',
+      'renovate-bot',
+      'renovate[bot]',
     ];
   }
 
   if (!ignoreLabel) {
-    ignoreLabel = "ignore";
+    ignoreLabel = 'ignore';
   }
 
   return {
@@ -162,26 +143,26 @@ export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): C
 }
 
 function fromLernaConfig(rootPath: string): Partial<Configuration> | undefined {
-  const lernaPath = path.join(rootPath, "lerna.json");
+  const lernaPath = path.join(rootPath, 'lerna.json');
   if (fs.existsSync(lernaPath)) {
-    return JSON.parse(fs.readFileSync(lernaPath)).changelog;
+    return JSON.parse(fs.readFileSync(lernaPath, 'utf8')).changelog;
   }
 }
 
 function fromPackageConfig(rootPath: string): Partial<Configuration> | undefined {
-  const pkgPath = path.join(rootPath, "package.json");
+  const pkgPath = path.join(rootPath, 'package.json');
   if (fs.existsSync(pkgPath)) {
-    return JSON.parse(fs.readFileSync(pkgPath)).changelog;
+    return JSON.parse(fs.readFileSync(pkgPath, 'utf8')).changelog;
   }
 }
 
 function findRepo(rootPath: string): string | undefined {
-  const pkgPath = path.join(rootPath, "package.json");
+  const pkgPath = path.join(rootPath, 'package.json');
   if (!fs.existsSync(pkgPath)) {
     return;
   }
 
-  const pkg = JSON.parse(fs.readFileSync(pkgPath));
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
   if (!pkg.repository) {
     return;
   }
@@ -190,29 +171,30 @@ function findRepo(rootPath: string): string | undefined {
 }
 
 function findNextVersion(rootPath: string): string | undefined {
-  const pkgPath = path.join(rootPath, "package.json");
-  const lernaPath = path.join(rootPath, "lerna.json");
+  const pkgPath = path.join(rootPath, 'package.json');
+  const lernaPath = path.join(rootPath, 'lerna.json');
 
-  const pkg = fs.existsSync(pkgPath) ? JSON.parse(fs.readFileSync(pkgPath)) : {};
-  const lerna = fs.existsSync(lernaPath) ? JSON.parse(fs.readFileSync(lernaPath)) : {};
+  const pkg = fs.existsSync(pkgPath) ? JSON.parse(fs.readFileSync(pkgPath, 'utf8')) : {};
+  const lerna = fs.existsSync(lernaPath) ? JSON.parse(fs.readFileSync(lernaPath, 'utf8')) : {};
 
   return pkg.version ? `v${pkg.version}` : lerna.version ? `v${lerna.version}` : undefined;
 }
 
-export function findRepoFromPkg(pkg: any): string | undefined {
+export function findRepoFromPkg(pkg: { repository: { url: string } | string }): string | undefined {
+  // @ts-expect-error ignore for now
   const url = pkg.repository.url || pkg.repository;
   const info = hostedGitInfo.fromUrl(url);
-  if (info && info.type === "github") {
+  if (info && info.type === 'github') {
     return `${info.user}/${info.project}`;
   }
   // cannot detect self hosted GitHub, e.g
   // git@github.host.com:embroider-build/github-changelog.git
   // https://github.host.com/embroider-build/github-changelog.git
-  const matchHttps = /https:\/\/[^\/]+\/([^\/]+)\/([^\/]+)\.git/.exec(url);
+  const matchHttps = /https:\/\/[^/]+\/([^/]+)\/([^/]+)\.git/.exec(url);
   if (matchHttps && matchHttps.length === 3) {
     return `${matchHttps[1]}/${matchHttps[2]}`;
   }
-  const matchGit = /git@[^:]+:([^\/]+)\/([^\/]+)\.git/.exec(url);
+  const matchGit = /git@[^:]+:([^/]+)\/([^/]+)\.git/.exec(url);
   if (matchGit && matchGit.length === 3) {
     return `${matchGit[1]}/${matchGit[2]}`;
   }

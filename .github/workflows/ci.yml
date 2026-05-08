@@ -6,7 +6,7 @@ on:
       - master
       - main
     tags:
-      - "v*"
+      - 'v*'
   pull_request:
 
 jobs:
@@ -23,13 +23,13 @@ jobs:
       - run: pnpm lint
 
   tests:
-    name: "Tests on Node.js ${{ matrix.node-version }} - ${{ matrix.os }}"
+    name: 'Tests on Node.js ${{ matrix.node-version }} - ${{ matrix.os }}'
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
-        node-version: ["22", "24", "26"]
+        node-version: ['22', '24', '26']
         os:
           - 'ubuntu-latest'
           - 'windows-latest'
@@ -46,5 +46,5 @@ jobs:
       - run: git fetch --all && git fetch --unshallow # this is to work for the acceptance tests
       - run: pnpm test
         env:
-          GITHUB_API_URL: ""
+          GITHUB_API_URL: ''
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }} #this is for acceptance tests

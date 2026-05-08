@@ -1,7 +1,7 @@
-const path = require("path");
+import path from 'path';
 
-import ConfigurationError from "./configuration-error";
-import fetch from "./fetch";
+import ConfigurationError from './configuration-error.js';
+import fetch from './fetch.js';
 
 interface GitHubContributorBase {
   name: string;
@@ -44,11 +44,11 @@ export default class GithubAPI {
   private github: string;
 
   constructor(config: Options) {
-    this.cacheDir = config.cacheDir && path.join(config.rootPath, config.cacheDir, "github");
-    this.github = config.github || process.env.GITHUB_DOMAIN || "github.com";
+    this.cacheDir = config.cacheDir && path.join(config.rootPath, config.cacheDir, 'github');
+    this.github = config.github || process.env.GITHUB_DOMAIN || 'github.com';
     this.auth = this.getAuthToken();
     if (!this.auth) {
-      throw new ConfigurationError("Must provide GITHUB_AUTH");
+      throw new ConfigurationError('Must provide GITHUB_AUTH');
     }
   }
 
@@ -61,20 +61,21 @@ export default class GithubAPI {
     return this._fetch(`${prefix}/repos/${repo}/issues/${issue}`);
   }
 
-  public async getUserData(userInfo: Pick<GithubUserInfo, "login" | "html_url">): Promise<GitHubContributor> {
+  public async getUserData(userInfo: Pick<GithubUserInfo, 'login' | 'html_url'>): Promise<GitHubContributor> {
     let login = userInfo.login;
-    let path = "users";
+    let path = 'users';
 
     // github API itself does not tell if contributor is an app. Best guess was to
     // check the `html_url` for the `/apps/` segment
-    if (userInfo.html_url && userInfo.html_url.includes("/apps/")) {
-      path = "apps";
-      login = userInfo.html_url.split("/").pop() as string;
+    if (userInfo.html_url && userInfo.html_url.includes('/apps/')) {
+      path = 'apps';
+      login = userInfo.html_url.split('/').pop() as string;
     }
     const prefix = process.env.GITHUB_API_URL || `https://api.${this.github}`;
     return await this._fetch(`${prefix}/${path}/${login}`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async _fetch(url: string): Promise<any> {
     const res = await fetch(url, {
       cachePath: this.cacheDir,
@@ -90,6 +91,6 @@ export default class GithubAPI {
   }
 
   protected getAuthToken(): string {
-    return process.env.GITHUB_AUTH || "";
+    return process.env.GITHUB_AUTH || '';
   }
 }

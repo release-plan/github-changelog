@@ -1,9 +1,9 @@
-import chalk = require("chalk");
+import chalk from 'chalk';
 
-const ProgressBar = require("progress");
+import ProgressBar from 'progress';
 
 class ProgressBarController {
-  private bar: any;
+  private bar: ProgressBar | null;
 
   constructor() {
     this.bar = null;
@@ -22,8 +22,8 @@ class ProgressBarController {
 
     this.bar = new ProgressBar(`:bar ${title} (:percent)`, {
       total,
-      complete: chalk.hex("#0366d6")("█"),
-      incomplete: chalk.level > 0 ? chalk.gray("█") : "░",
+      complete: chalk.hex('#0366d6')('█'),
+      incomplete: chalk.level > 0 ? chalk.gray('█') : '░',
       clear: true,
 
       // terminal columns - package name length - additional characters length

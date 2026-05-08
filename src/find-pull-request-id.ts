@@ -1,5 +1,5 @@
 export default function findPullRequestId(message: string): string | null {
-  const lines = message.split("\n");
+  const lines = message.split('\n');
   const firstLine = lines[0];
 
   const mergeMatch = firstLine.match(/^Merge pull request #(\d+) from /);
