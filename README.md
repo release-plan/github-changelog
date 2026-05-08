@@ -5,7 +5,6 @@
 
 PR-based changelog generator with monorepo support
 
-
 ## Usage
 
 ```bash
@@ -16,12 +15,15 @@ npx github-changelog
 ## Unreleased (2018-05-24)
 
 #### :bug: Bug Fix
-* [#198](https://github.com/my-org/my-repo/pull/198) Avoid an infinite loop ([@helpful-hacker](https://github.com/helpful-hacker))
+
+- [#198](https://github.com/my-org/my-repo/pull/198) Avoid an infinite loop ([@helpful-hacker](https://github.com/helpful-hacker))
 
 #### :house: Internal
-* [#183](https://github.com/my-org/my-repo/pull/183) Standardize error messages ([@careful-coder](https://github.com/careful-coder))
+
+- [#183](https://github.com/my-org/my-repo/pull/183) Standardize error messages ([@careful-coder](https://github.com/careful-coder))
 
 #### Commiters: 2
+
 - Helpful Hacker ([@helpful-hacker](https://github.com/helpful-hacker))
 - [@careful-coder](https://github.com/careful-coder)
 ```
@@ -61,7 +63,6 @@ You'll need a [personal access token](https://github.com/settings/tokens)
 for the GitHub API with the `repo` scope for private repositories or just
 `public_repo` scope for public repositories.
 
-
 ## Configuration
 
 You can configure `github-changelog` in various ways. The easiest way is by
@@ -70,12 +71,12 @@ adding a `changelog` key to the `package.json` file of your project:
 ```json5
 {
   // ...
-  "changelog": {
-    "labels": {
-      "feature": "New Feature",
-      "bug": "Bug Fix"
-    }
-  }
+  changelog: {
+    labels: {
+      feature: 'New Feature',
+      bug: 'Bug Fix',
+    },
+  },
 }
 ```
 
@@ -108,9 +109,9 @@ have a matching label defined in the configuration `labels`. Listing these PRs a
 ```json5
 {
   // ...
-  "changelog": {
-    "wildcardLabel": "unlabeled"
-  }
+  changelog: {
+    wildcardLabel: 'unlabeled',
+  },
 }
 ```
 
@@ -120,7 +121,8 @@ A default changlog heading of `:present: Additional updates` is set when a value
 ## Unreleased (2018-05-24)
 
 #### 🎁 Additional updates
-* [#514](https://github.com/my-org/my-repo/pull/514) Setting to mute video ([@diligent-developer](https://github.com/diligent-developer))
+
+- [#514](https://github.com/my-org/my-repo/pull/514) Setting to mute video ([@diligent-developer](https://github.com/diligent-developer))
 ```
 
 You can overwrite the default heading by including the `wildcardLabel` value in the configuration's `labels` object. For example:
@@ -128,17 +130,16 @@ You can overwrite the default heading by including the `wildcardLabel` value in 
 ```json5
 {
   // ...
-  "changelog": {
-    "labels": {
-      "feature": "New Feature",
-      "bug": "Bug Fix",
-      "unlabeled": "Unlabeled PRs"
+  changelog: {
+    labels: {
+      feature: 'New Feature',
+      bug: 'Bug Fix',
+      unlabeled: 'Unlabeled PRs',
     },
-    "wildcardLabel": "unlabeled"
-  }
+    wildcardLabel: 'unlabeled',
+  },
 }
 ```
-
 
 ## License
 

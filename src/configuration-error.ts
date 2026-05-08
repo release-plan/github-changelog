@@ -1,5 +1,5 @@
 export default class ConfigurationError {
-  public name = "ConfigurationError";
+  public name = 'ConfigurationError';
   public message: string;
 
   constructor(message: string) {

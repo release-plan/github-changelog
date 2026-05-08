@@ -1,7 +1,7 @@
-import { GitHubContributor, type GithubAppInfo, type GithubUserInfo } from "./github-api";
-import { CommitInfo, Release } from "./interfaces";
+import { GitHubContributor, type GithubAppInfo, type GithubUserInfo } from './github-api';
+import { CommitInfo, Release } from './interfaces';
 
-const UNRELEASED_TAG = "___unreleased___";
+const UNRELEASED_TAG = '___unreleased___';
 const COMMIT_FIX_REGEX = /(fix|close|resolve)(e?s|e?d)? [T#](\d+)/i;
 
 interface CategoryInfo {
@@ -26,8 +26,8 @@ export default class MarkdownRenderer {
     const output = releases
       .map(release => this.renderRelease(release))
       .filter(Boolean)
-      .join("\n\n\n");
-    return output ? `\n${output}` : "";
+      .join('\n\n\n');
+    return output ? `\n${output}` : '';
   }
 
   public renderRelease(release: Release): string | undefined {
@@ -36,7 +36,7 @@ export default class MarkdownRenderer {
     const categoriesWithCommits = categories.filter(category => category.commits.length > 0);
 
     // Skip this iteration if there are no commits available for the release
-    if (categoriesWithCommits.length === 0) return "";
+    if (categoriesWithCommits.length === 0) return '';
 
     const releaseTitle = release.name === UNRELEASED_TAG ? this.options.unreleasedName : release.name;
 
@@ -77,27 +77,27 @@ export default class MarkdownRenderer {
     return packageNames
       .map(packageName => {
         const pkgCommits = commitsByPackage[packageName];
-        return `* ${packageName}\n${this.renderContributionList(pkgCommits, "  ")}`;
+        return `* ${packageName}\n${this.renderContributionList(pkgCommits, '  ')}`;
       })
-      .join("\n");
+      .join('\n');
   }
 
   public renderPackageNames(packageNames: string[]) {
-    return packageNames.length > 0 ? packageNames.map(pkg => `\`${pkg}\``).join(", ") : "Other";
+    return packageNames.length > 0 ? packageNames.map(pkg => `\`${pkg}\``).join(', ') : 'Other';
   }
 
-  public renderContributionList(commits: CommitInfo[], prefix: string = ""): string {
+  public renderContributionList(commits: CommitInfo[], prefix: string = ''): string {
     return commits
       .map(commit => this.renderContribution(commit))
       .filter(Boolean)
       .map(rendered => `${prefix}* ${rendered}`)
-      .join("\n");
+      .join('\n');
   }
 
   public renderContribution(commit: CommitInfo): string | undefined {
     const issue = commit.githubIssue;
     if (issue) {
-      let markdown = "";
+      let markdown = '';
 
       if (issue.number && issue.pull_request && issue.pull_request.html_url) {
         const prUrl = issue.pull_request.html_url;
@@ -117,7 +117,7 @@ export default class MarkdownRenderer {
   public renderContributorList(contributors: GitHubContributor[]) {
     const renderedContributors = contributors.map(contributor => `- ${this.renderContributor(contributor)}`).sort();
 
-    return `#### Committers: ${contributors.length}\n${renderedContributors.join("\n")}`;
+    return `#### Committers: ${contributors.length}\n${renderedContributors.join('\n')}`;
   }
 
   public renderContributor(contributor: GitHubContributor): string {
@@ -125,7 +125,7 @@ export default class MarkdownRenderer {
     const userNameAndLink = `[@${userName}](${contributor.html_url})`;
 
     if (contributor.name) {
-      const name = contributor.name + (!("type" in contributor) ? " [Bot]" : "");
+      const name = contributor.name + (!('type' in contributor) ? ' [Bot]' : '');
       return `${name} (${userNameAndLink})`;
     } else {
       return userNameAndLink;

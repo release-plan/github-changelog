@@ -27,9 +27,10 @@
     "build": "pnpm clean && tsc",
     "changelog": "node ./bin/cli.js",
     "clean": "rimraf lib",
+    "format": "prettier . --write",
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\" --prefixColors auto",
     "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\" --prefixColors auto && npm run format",
-    "lint:format": "prettier . --cache --check",
+    "lint:format": "prettier . --check",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
     "prepare": "pnpm build",
@@ -37,13 +38,6 @@
     "test": "vitest",
     "test-ci": "pnpm build && pnpm test",
     "watch": "pnpm build --watch"
-  },
-  "prettier": {
-    "arrowParens": "avoid",
-    "printWidth": 120,
-    "singleQuote": false,
-    "tabWidth": 2,
-    "trailingComma": "es5"
   },
   "dependencies": {
     "@manypkg/get-packages": "^2.2.0",
@@ -72,7 +66,7 @@
     "execa-latest": "npm:execa@^9.6.0",
     "fs-extra": "10.1.0",
     "globals": "^17.6.0",
-    "prettier": "2.8.8",
+    "prettier": "3.8.3",
     "release-plan": "^0.17.0",
     "rimraf": "3.0.2",
     "typescript": "6.0.3",

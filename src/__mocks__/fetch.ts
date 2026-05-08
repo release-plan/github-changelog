@@ -1,11 +1,16 @@
 type Json = { [key: string]: unknown };
-type MockResponse = { status: number; statusText: string; ok: boolean; body: Json };
+type MockResponse = {
+  status: number;
+  statusText: string;
+  ok: boolean;
+  body: Json;
+};
 
 let mockResponses: { [url: string]: Partial<MockResponse> } = {};
 
 const defaultMockResponseParams = {
   status: 200,
-  statusText: "OK",
+  statusText: 'OK',
   ok: true,
 };
 

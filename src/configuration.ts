@@ -1,10 +1,10 @@
-import fs from "node:fs";
-import path from "node:path";
-import hostedGitInfo from "hosted-git-info";
-import { getPackagesSync } from "@manypkg/get-packages";
+import fs from 'node:fs';
+import path from 'node:path';
+import hostedGitInfo from 'hosted-git-info';
+import { getPackagesSync } from '@manypkg/get-packages';
 
-import ConfigurationError from "./configuration-error";
-import { getRootPath } from "./git";
+import ConfigurationError from './configuration-error';
+import { getRootPath } from './git';
 
 export interface Configuration {
   repo: string;
@@ -96,11 +96,11 @@ export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): C
 
   if (!labels) {
     labels = {
-      breaking: ":boom: Breaking Change",
-      enhancement: ":rocket: Enhancement",
-      bug: ":bug: Bug Fix",
-      documentation: ":memo: Documentation",
-      internal: ":house: Internal",
+      breaking: ':boom: Breaking Change',
+      enhancement: ':rocket: Enhancement',
+      bug: ':bug: Bug Fix',
+      documentation: ':memo: Documentation',
+      internal: ':house: Internal',
     };
   }
 
@@ -109,23 +109,23 @@ export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): C
   }
 
   if (wildcardLabel && !labels[wildcardLabel]) {
-    labels[wildcardLabel] = ":present: Additional updates";
+    labels[wildcardLabel] = ':present: Additional updates';
   }
 
   if (!ignoreCommitters) {
     ignoreCommitters = [
-      "dependabot-bot",
-      "dependabot[bot]",
-      "dependabot-preview[bot]",
-      "greenkeeperio-bot",
-      "greenkeeper[bot]",
-      "renovate-bot",
-      "renovate[bot]",
+      'dependabot-bot',
+      'dependabot[bot]',
+      'dependabot-preview[bot]',
+      'greenkeeperio-bot',
+      'greenkeeper[bot]',
+      'renovate-bot',
+      'renovate[bot]',
     ];
   }
 
   if (!ignoreLabel) {
-    ignoreLabel = "ignore";
+    ignoreLabel = 'ignore';
   }
 
   return {
@@ -143,21 +143,21 @@ export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): C
 }
 
 function fromLernaConfig(rootPath: string): Partial<Configuration> | undefined {
-  const lernaPath = path.join(rootPath, "lerna.json");
+  const lernaPath = path.join(rootPath, 'lerna.json');
   if (fs.existsSync(lernaPath)) {
     return JSON.parse(fs.readFileSync(lernaPath, 'utf8')).changelog;
   }
 }
 
 function fromPackageConfig(rootPath: string): Partial<Configuration> | undefined {
-  const pkgPath = path.join(rootPath, "package.json");
+  const pkgPath = path.join(rootPath, 'package.json');
   if (fs.existsSync(pkgPath)) {
     return JSON.parse(fs.readFileSync(pkgPath, 'utf8')).changelog;
   }
 }
 
 function findRepo(rootPath: string): string | undefined {
-  const pkgPath = path.join(rootPath, "package.json");
+  const pkgPath = path.join(rootPath, 'package.json');
   if (!fs.existsSync(pkgPath)) {
     return;
   }
@@ -171,8 +171,8 @@ function findRepo(rootPath: string): string | undefined {
 }
 
 function findNextVersion(rootPath: string): string | undefined {
-  const pkgPath = path.join(rootPath, "package.json");
-  const lernaPath = path.join(rootPath, "lerna.json");
+  const pkgPath = path.join(rootPath, 'package.json');
+  const lernaPath = path.join(rootPath, 'lerna.json');
 
   const pkg = fs.existsSync(pkgPath) ? JSON.parse(fs.readFileSync(pkgPath, 'utf8')) : {};
   const lerna = fs.existsSync(lernaPath) ? JSON.parse(fs.readFileSync(lernaPath, 'utf8')) : {};
@@ -180,11 +180,11 @@ function findNextVersion(rootPath: string): string | undefined {
   return pkg.version ? `v${pkg.version}` : lerna.version ? `v${lerna.version}` : undefined;
 }
 
-export function findRepoFromPkg(pkg: {repository: { url: string } | string}): string | undefined {
+export function findRepoFromPkg(pkg: { repository: { url: string } | string }): string | undefined {
   // @ts-expect-error ignore for now
   const url = pkg.repository.url || pkg.repository;
   const info = hostedGitInfo.fromUrl(url);
-  if (info && info.type === "github") {
+  if (info && info.type === 'github') {
     return `${info.user}/${info.project}`;
   }
   // cannot detect self hosted GitHub, e.g

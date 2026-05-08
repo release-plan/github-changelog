@@ -1,15 +1,15 @@
-import pMap from "p-map";
-import { resolve, sep } from "node:path";
+import pMap from 'p-map';
+import { resolve, sep } from 'node:path';
 
-import progressBar from "./progress-bar";
-import { Configuration } from "./configuration";
-import findPullRequestId from "./find-pull-request-id";
-import * as Git from "./git";
-import GithubAPI, { GitHubContributor } from "./github-api";
-import { CommitInfo, Release } from "./interfaces";
-import MarkdownRenderer from "./markdown-renderer";
+import progressBar from './progress-bar';
+import { Configuration } from './configuration';
+import findPullRequestId from './find-pull-request-id';
+import * as Git from './git';
+import GithubAPI, { GitHubContributor } from './github-api';
+import { CommitInfo, Release } from './interfaces';
+import MarkdownRenderer from './markdown-renderer';
 
-const UNRELEASED_TAG = "___unreleased___";
+const UNRELEASED_TAG = '___unreleased___';
 
 interface Options {
   tagFrom?: string;
@@ -27,13 +27,13 @@ export default class Changelog {
     this.renderer = new MarkdownRenderer({
       categories: Object.keys(this.config.labels).map(key => this.config.labels[key]),
       baseIssueUrl: this.github.getBaseIssueUrl(this.config.repo),
-      unreleasedName: this.config.nextVersion || "Unreleased",
+      unreleasedName: this.config.nextVersion || 'Unreleased',
     });
   }
 
   public async createMarkdown(options: Options = {}) {
     const from = options.tagFrom || (await Git.lastTag());
-    const to = options.tagTo || "HEAD";
+    const to = options.tagTo || 'HEAD';
 
     const releases = await this.listReleases(from, to);
 
@@ -101,15 +101,15 @@ export default class Changelog {
         return foundPackage.name;
       }
 
-      return "";
+      return '';
     } else {
       // if we did not find any packages then default to
-      const parts = path.split("/");
-      if (parts[0] !== "packages" || parts.length < 3) {
-        return "";
+      const parts = path.split('/');
+      if (parts[0] !== 'packages' || parts.length < 3) {
+        return '';
       }
 
-      if (parts.length >= 4 && parts[1][0] === "@") {
+      if (parts.length >= 4 && parts[1][0] === '@') {
         return `${parts[1]}/${parts[2]}`;
       }
 
@@ -149,8 +149,8 @@ export default class Changelog {
 
   private sanitizeCommitter(contributor: GitHubContributor) {
     // Response for Copilot is "Copilot SWE Agent" - but we prefer "Copilot"
-    if (contributor.name === "Copilot SWE Agent") {
-      contributor.name = "Copilot";
+    if (contributor.name === 'Copilot SWE Agent') {
+      contributor.name = 'Copilot';
     }
 
     return contributor;
@@ -162,12 +162,12 @@ export default class Changelog {
 
       let tagsInCommit;
       if (refName.length > 1) {
-        const TAG_PREFIX = "tag: ";
+        const TAG_PREFIX = 'tag: ';
 
         // Since there might be multiple tags referenced by the same commit,
         // we need to treat all of them as a list.
         tagsInCommit = refName
-          .split(", ")
+          .split(', ')
           .filter(ref => ref.startsWith(TAG_PREFIX))
           .map(ref => ref.substr(TAG_PREFIX.length));
       }
@@ -187,7 +187,7 @@ export default class Changelog {
   }
 
   private async downloadIssueData(commitInfos: CommitInfo[]) {
-    progressBar.init("Downloading issue information…", commitInfos.length);
+    progressBar.init('Downloading issue information…', commitInfos.length);
     await pMap(
       commitInfos,
       async (commitInfo: CommitInfo) => {
@@ -197,7 +197,7 @@ export default class Changelog {
 
         progressBar.tick();
       },
-      { concurrency: 5 }
+      { concurrency: 5 },
     );
     progressBar.terminate();
   }
@@ -246,7 +246,7 @@ export default class Changelog {
 
   protected getToday() {
     const date = new Date().toISOString();
-    return date.slice(0, date.indexOf("T"));
+    return date.slice(0, date.indexOf('T'));
   }
 
   private fillInCategories(commits: CommitInfo[]) {
@@ -277,7 +277,7 @@ export default class Changelog {
   }
 
   private async fillInPackages(commits: CommitInfo[]) {
-    progressBar.init("Mapping commits to packages…", commits.length);
+    progressBar.init('Mapping commits to packages…', commits.length);
 
     try {
       await pMap(
@@ -287,7 +287,7 @@ export default class Changelog {
 
           progressBar.tick();
         },
-        { concurrency: 5 }
+        { concurrency: 5 },
       );
     } finally {
       progressBar.terminate();
