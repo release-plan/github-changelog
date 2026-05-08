@@ -75,6 +75,7 @@ export default class GithubAPI {
     return await this._fetch(`${prefix}/${path}/${login}`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async _fetch(url: string): Promise<any> {
     const res = await fetch(url, {
       cachePath: this.cacheDir,

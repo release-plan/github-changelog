@@ -66,7 +66,7 @@ export default class Changelog {
     const commits = await this.getCommitInfos(from, to);
 
     // Step 6: Group commits by release (local)
-    let releases = this.groupByRelease(commits);
+    const releases = this.groupByRelease(commits);
 
     // Step 7: Compile list of committers in release (local + remote)
     await this.fillInContributors(releases);
@@ -75,7 +75,7 @@ export default class Changelog {
   }
 
   private async getListOfUniquePackages(sha: string): Promise<string[]> {
-    let changedPaths = await Git.changedPaths(sha);
+    const changedPaths = await Git.changedPaths(sha);
 
     return changedPaths
       .map(path => this.packageFromPath(path))
@@ -92,7 +92,7 @@ export default class Changelog {
       // ember-fastboot
       // ember-fastboot-2-fast-2-furious
       const foundPackage = this.config.packages.find(p => {
-        let withSlash = p.path.endsWith(sep) ? p.path : `${p.path}${sep}`;
+        const withSlash = p.path.endsWith(sep) ? p.path : `${p.path}${sep}`;
 
         return absolutePath.startsWith(withSlash);
       });
@@ -206,15 +206,15 @@ export default class Changelog {
     // Analyze the commits and group them by tag.
     // This is useful to generate multiple release logs in case there are
     // multiple release tags.
-    let releaseMap: { [id: string]: Release } = {};
+    const releaseMap: { [id: string]: Release } = {};
 
     function pushCommit(this: Changelog, currentTag: string, commit: CommitInfo) {
       if (!releaseMap[currentTag]) {
-        let date = currentTag === UNRELEASED_TAG ? this.getToday() : commit.date;
+        const date = currentTag === UNRELEASED_TAG ? this.getToday() : commit.date;
         releaseMap[currentTag] = { name: currentTag, date, commits: [] };
       }
 
-      let prUserLogin = commit.githubIssue?.user.login;
+      const prUserLogin = commit.githubIssue?.user.login;
       if (prUserLogin && !this.ignoreCommitter(prUserLogin)) {
         releaseMap[currentTag].commits.push(commit);
       }
@@ -259,7 +259,7 @@ export default class Changelog {
         // check whether the commit has any of the labels from the learna.json config.
         // If not, label this commit with the provided label
 
-        let foundLabel = Object.keys(this.config.labels).some(label => labels.indexOf(label.toLowerCase()) !== -1);
+        const foundLabel = Object.keys(this.config.labels).some(label => labels.indexOf(label.toLowerCase()) !== -1);
 
         if (!foundLabel) {
           labels.push(this.config.wildcardLabel);
@@ -301,6 +301,6 @@ export default class Changelog {
   }
 }
 
-function onlyUnique(value: any, index: number, self: any[]): boolean {
+function onlyUnique<T>(value: T, index: number, self: T[]): boolean {
   return self.indexOf(value) === index;
 }

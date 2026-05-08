@@ -1,4 +1,4 @@
-import type { GithubAppInfo, GithubUserInfo } from "./github-api";
+import type { GithubAppInfo } from "./github-api";
 import { CommitInfo, Release } from "./interfaces";
 import MarkdownRenderer from "./markdown-renderer";
 
@@ -50,7 +50,7 @@ const COMMIT_WITH_PHAB_ISSUE_REF = {
   },
 } as CommitInfo;
 
-function renderer(options: any = {}): MarkdownRenderer {
+function renderer(options: object = {}): MarkdownRenderer {
   return new MarkdownRenderer({
     baseIssueUrl: "http://foo.bar/",
     categories: [],

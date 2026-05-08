@@ -64,13 +64,13 @@ export async function run() {
     .epilog("For more information, see https://github.com/embroider-build/github-changelog")
     .parseSync();
 
-  let options = {
+  const options = {
     tagFrom: argv["from"] || argv["tag-from"],
     tagTo: argv["to"] || argv["tag-to"],
   };
 
   try {
-    let config = loadConfig({
+    const config = loadConfig({
       nextVersionFromMetadata: argv["next-version-from-metadata"],
       repo: argv.repo,
     });
@@ -83,9 +83,9 @@ export async function run() {
       config.ignoreReleases = argv["ignore-releases"];
     }
 
-    let result = await new Changelog(config).createMarkdown(options);
+    const result = await new Changelog(config).createMarkdown(options);
 
-    let highlighted = highlight(result, {
+    const highlighted = highlight(result, {
       language: "Markdown",
       theme: {
         section: chalk.bold,
@@ -99,7 +99,7 @@ export async function run() {
     if (e instanceof ConfigurationError) {
       console.log(chalk.red(e.message));
     } else {
-      console.log(chalk.red((e as any).stack));
+      console.log(chalk.red((e as Error).stack));
     }
 
     process.exitCode = 1;

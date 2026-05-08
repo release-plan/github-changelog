@@ -1,4 +1,4 @@
-import { describe, it, vi } from "vitest";
+import { describe, it } from "vitest";
 import { execa } from "execa-latest";
 import { expect } from "vitest";
 

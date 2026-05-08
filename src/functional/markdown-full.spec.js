@@ -1,5 +1,3 @@
-import { CommitListItem } from "../git";
-
 import { vi, describe, beforeEach, afterEach, it, expect } from "vitest";
 
 import * as git from "../git";

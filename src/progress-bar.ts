@@ -3,7 +3,7 @@ import chalk from "chalk";
 import ProgressBar from "progress";
 
 class ProgressBarController {
-  private bar: any;
+  private bar: ProgressBar | null;
 
   constructor() {
     this.bar = null;

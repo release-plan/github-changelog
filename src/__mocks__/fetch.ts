@@ -1,5 +1,3 @@
-"use strict";
-
 type Json = { [key: string]: unknown };
 type MockResponse = { status: number; statusText: string; ok: boolean; body: Json };
 

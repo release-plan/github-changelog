@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src",
-    "target": "es2015",
+    "target": "es2022",
     "module": "ES2022",
     "removeComments": true,
     "allowJs": true,
@@ -11,5 +11,5 @@
     "skipLibCheck": true,
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.spec.ts"]
+  "exclude": ["src/**/*.spec.ts", "src/__mocks__"]
 }

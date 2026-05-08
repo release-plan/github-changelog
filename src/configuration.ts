@@ -27,35 +27,15 @@ export interface ConfigLoaderOptions {
 }
 
 export function load(options: ConfigLoaderOptions = {}): Configuration {
-  let rootPath = getRootPath();
+  const rootPath = getRootPath();
   return fromPath(rootPath, options);
-}
-
-interface PackageJson {
-  type: boolean;
-  private: boolean;
-  name: string;
-}
-
-interface Package {
-  dir: string;
-  relativeDir: string;
-  packageJson: PackageJson;
-}
-
-interface PackagesResult {
-  tool: {
-    type: "pnpm" | "yarn" | "npm";
-  };
-  packages: Package[];
-  rootPackage: Package;
 }
 
 function getPackages(rootPath: string): { name: string; path: string }[] {
   try {
-    let { packages } = getPackagesSync(rootPath);
+    const { packages } = getPackagesSync(rootPath);
 
-    let result = packages
+    const result = packages
       .filter(pkg => !pkg.packageJson.private)
       .map(pkg => ({
         name: pkg.packageJson.name,
@@ -87,14 +67,15 @@ function getPackages(rootPath: string): { name: string; path: string }[] {
 
 export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): Configuration {
   // Step 1: load partial config from `package.json` or `lerna.json`
-  let config = fromPackageConfig(rootPath) || fromLernaConfig(rootPath) || {};
+  const config = fromPackageConfig(rootPath) || fromLernaConfig(rootPath) || {};
 
   if (options.repo) {
     config.repo = options.repo;
   }
 
   // Step 2: fill partial config with defaults
-  let { repo, nextVersion, labels, cacheDir, ignoreCommitters, ignoreLabel, wildcardLabel, github } = config;
+  const { cacheDir, github } = config;
+  let { repo, nextVersion, labels, ignoreCommitters, ignoreLabel, wildcardLabel } = config;
 
   const packages = getPackages(rootPath);
 
@@ -199,7 +180,8 @@ function findNextVersion(rootPath: string): string | undefined {
   return pkg.version ? `v${pkg.version}` : lerna.version ? `v${lerna.version}` : undefined;
 }
 
-export function findRepoFromPkg(pkg: any): string | undefined {
+export function findRepoFromPkg(pkg: {repository: { url: string } | string}): string | undefined {
+  // @ts-expect-error ignore for now
   const url = pkg.repository.url || pkg.repository;
   const info = hostedGitInfo.fromUrl(url);
   if (info && info.type === "github") {
@@ -208,11 +190,11 @@ export function findRepoFromPkg(pkg: any): string | undefined {
   // cannot detect self hosted GitHub, e.g
   // git@github.host.com:embroider-build/github-changelog.git
   // https://github.host.com/embroider-build/github-changelog.git
-  const matchHttps = /https:\/\/[^\/]+\/([^\/]+)\/([^\/]+)\.git/.exec(url);
+  const matchHttps = /https:\/\/[^/]+\/([^/]+)\/([^/]+)\.git/.exec(url);
   if (matchHttps && matchHttps.length === 3) {
     return `${matchHttps[1]}/${matchHttps[2]}`;
   }
-  const matchGit = /git@[^:]+:([^\/]+)\/([^\/]+)\.git/.exec(url);
+  const matchGit = /git@[^:]+:([^/]+)\/([^/]+)\.git/.exec(url);
   if (matchGit && matchGit.length === 3) {
     return `${matchGit[1]}/${matchGit[2]}`;
   }
