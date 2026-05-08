@@ -24,4 +24,4 @@ When reviewing merged PR's the labels to be used are:
 
 ## Release
 
-Once the prep work is completed, the actual release is straight forward: you just need to merge the open [Plan Release](https://github.com/embroider-build/github-changelog/pulls?q=is%3Apr+is%3Aopen+%22Prepare+Release%22+in%3Atitle) PR
+Once the prep work is completed, the actual release is straight forward: you just need to merge the open [Plan Release](https://github.com/release-plan/github-changelog/pulls?q=is%3Apr+is%3Aopen+%22Prepare+Release%22+in%3Atitle) PR

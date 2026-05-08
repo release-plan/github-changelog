@@ -16,10 +16,10 @@
   },
   "license": "MIT",
   "author": "Bo Borgerson <gigabo@gmail.com>",
+  "type": "module",
   "exports": {
     ".": "./lib/index.js"
   },
-  "type": "module",
   "bin": {
     "github-changelog": "bin/cli.js"
   },
@@ -67,7 +67,7 @@
     "fs-extra": "10.1.0",
     "globals": "^17.6.0",
     "prettier": "3.8.3",
-    "release-plan": "^0.17.0",
+    "release-plan": "^0.18.0",
     "rimraf": "3.0.2",
     "typescript": "6.0.3",
     "typescript-eslint": "^8.59.2",
