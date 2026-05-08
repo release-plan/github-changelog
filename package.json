@@ -39,6 +39,10 @@
     "test-ci": "pnpm build && pnpm test",
     "watch": "pnpm build --watch"
   },
+  "files": [
+    "lib",
+    "bin"
+  ],
   "dependencies": {
     "@manypkg/get-packages": "^2.2.0",
     "chalk": "^4.0.0",
