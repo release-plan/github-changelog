@@ -47,11 +47,11 @@
     "@manypkg/get-packages": "^2.2.0",
     "chalk": "^4.0.0",
     "cli-highlight": "^2.1.11",
-    "execa": "^5.0.0",
     "hosted-git-info": "^4.0.0",
     "make-fetch-happen": "^15.0.5",
     "p-map": "^3.0.0",
     "progress": "^2.0.0",
+    "tinyexec": "^1.1.2",
     "yargs": "^17.1.0"
   },
   "devDependencies": {
@@ -67,7 +67,6 @@
     "eslint": "10.3.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-prettier": "4.2.1",
-    "execa-latest": "npm:execa@^9.6.0",
     "fs-extra": "10.1.0",
     "globals": "^17.6.0",
     "prettier": "3.8.3",

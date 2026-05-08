@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest';
-import { execa } from 'execa-latest';
+import { x } from 'tinyexec';
 import { expect } from 'vitest';
 
 if (!process.env.GITHUB_AUTH) {
@@ -11,7 +11,7 @@ const todaysDate = new Date().toISOString().split('T')[0];
 describe.skipIf(!process.env.GITHUB_AUTH)('command line interface', () => {
   it('can produce a result', async () => {
     const { stdout } =
-      await execa`node ./bin/cli.js --from=ee1c697fcf871114c53e9847c43e221d3056f19d --to=b20002d9760e9e212bc623c8f3f42931ddc01bda`;
+      await x('node', ['./lib/cli.js', '--from=ee1c697fcf871114c53e9847c43e221d3056f19d', '--to=b20002d9760e9e212bc623c8f3f42931ddc01bda'], {nodeOptions: {cwd: process.cwd()}});
 
     expect(stdout).toMatchInlineSnapshot(`
       "
@@ -32,13 +32,14 @@ describe.skipIf(!process.env.GITHUB_AUTH)('command line interface', () => {
         * [#29](https://github.com/release-plan/github-changelog/pull/29) Prepare Release ([@github-actions[bot]](https://github.com/apps/github-actions))
 
       #### Committers: 1
-      - GitHub Actions [Bot] ([@github-actions](https://github.com/apps/github-actions))"
+      - GitHub Actions [Bot] ([@github-actions](https://github.com/apps/github-actions))
+      "
     `);
   });
 
   it('combines things into releases', async () => {
     const { stdout } =
-      await execa`node ./bin/cli.js --ignore-releases --from=ee1c697fcf871114c53e9847c43e221d3056f19d --to=b20002d9760e9e212bc623c8f3f42931ddc01bda`;
+      await x('node', './bin/cli.js', '--ignore-releases', '--from=ee1c697fcf871114c53e9847c43e221d3056f19d', '--to=b20002d9760e9e212bc623c8f3f42931ddc01bda');
 
     expect(stdout).toMatchInlineSnapshot(`
       "
