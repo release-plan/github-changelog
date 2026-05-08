@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest';
-import { execa } from 'execa-latest';
+import { execa } from 'execa';
 import { expect } from 'vitest';
 
 if (!process.env.GITHUB_AUTH) {
