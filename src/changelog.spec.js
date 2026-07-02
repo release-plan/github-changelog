@@ -278,5 +278,196 @@ describe('Changelog', () => {
         },
       ]);
     });
+    it('falls back gracefully when getUserData throws for a bot account (403)', async () => {
+      fetch.__setMockResponses({
+        'https://api.github.com/users/test-user-1': {
+          body: {
+            login: 'test-user-1',
+            html_url: 'https://github.com/test-user-1',
+            name: 'Test User 1',
+          },
+        },
+
+        // Simulate 403 - token lacks scope to fetch this bot's profile
+        'https://api.github.com/users/github-actions': {
+          status: 403,
+          statusText: 'Forbidden',
+          ok: false,
+          body: {
+            message: 'Resource not accessible by integration',
+          },
+        },
+      });
+
+      const changelog = new Changelog({ ignoreCommitters: [] });
+
+      const testCommits = [
+        {
+          commitSHA: 'a0000001',
+          githubIssue: {
+            user: {
+              login: 'test-user-1',
+              html_url: 'https://github.com/test-user-1',
+            },
+          },
+        },
+        {
+          commitSHA: 'a0000002',
+          githubIssue: {
+            user: {
+              login: 'github-actions',
+              html_url: 'https://github.com/apps/github-actions',
+            },
+          },
+        },
+      ];
+
+      const committers = await changelog.getCommitters(testCommits);
+
+      expect(committers).toHaveLength(2);
+
+      expect(committers[0]).toEqual({
+        login: 'test-user-1',
+        html_url: 'https://github.com/test-user-1',
+        name: 'Test User 1',
+      });
+
+      // Falls back to login-only — no name, no type, html_url preserved from PR data
+      expect(committers[1]).toEqual({
+        login: 'github-actions',
+        html_url: 'https://github.com/apps/github-actions',
+      });
+    });
+    it('ignoreCommitters still works when mixed with failing getUserData', async () => {
+      fetch.__setMockResponses({
+        'https://api.github.com/users/real-user': {
+          body: {
+            login: 'real-user',
+            html_url: 'https://github.com/real-user',
+            name: 'Real User',
+          },
+        },
+      });
+
+      // ignored-bot is in ignoreCommitters: getUserData should never be called for it
+      const changelog = new Changelog({
+        ignoreCommitters: ['ignored-bot'],
+      });
+
+      const testCommits = [
+        {
+          commitSHA: 'a0000001',
+          githubIssue: {
+            user: {
+              login: 'real-user',
+              html_url: 'https://github.com/real-user',
+            },
+          },
+        },
+        {
+          commitSHA: 'a0000002',
+          githubIssue: {
+            user: {
+              login: 'ignored-bot',
+              html_url: 'https://github.com/ignored-bot',
+            },
+          },
+        },
+      ];
+
+      const committers = await changelog.getCommitters(testCommits);
+
+      // ignored-bot skipped before getUserData is even attempted
+      expect(committers).toHaveLength(1);
+
+      expect(committers[0]).toEqual({
+        login: 'real-user',
+        html_url: 'https://github.com/real-user',
+        name: 'Real User',
+      });
+    });
+    it('falls back with empty html_url when PR user data has none', async () => {
+      fetch.__setMockResponses({ });
+
+      // ignored-bot is in ignoreCommitters: getUserData should never be called for it
+      const changelog = new Changelog({
+        ignoreCommitters: [],
+      });
+
+      const testCommits = [
+        {
+          commitSHA: 'a0000001',
+          githubIssue: {
+            user: {
+              login: 'restricted-bot',
+            },
+          },
+        },
+      ];
+
+      const committers = await changelog.getCommitters(testCommits);
+
+      // ignored-bot skipped before getUserData is even attempted
+      expect(committers).toHaveLength(1);
+
+      expect(committers[0]).toEqual({
+        login: 'restricted-bot',
+        html_url: '',
+      });
+    });
+    it('falls back with gracefully when getUserData throws for a deleted user', async () => {
+      fetch.__setMockResponses({
+        'https://api.github.com/users/test-user1': {
+          body: {
+            login: 'test-user1',
+            html_url: 'https://github.com/test-user1',
+            name: 'Test User 1',
+          },
+        },
+        // Simulate 404 - account was deleted aftr the pr was merged
+        'https://api.github.com/users/deleted-user': {
+          status: 404,
+          statusText: 'Not Found',
+          ok: false,
+          body: { message: 'Not Found' },
+        },
+      });
+      const changelog = new Changelog({ ignoreCommitters: [] });
+      const testCommits = [
+        {
+          commitSHA: 'a0000001',
+          githubIssue: {
+            user: {
+              login: 'test-user1',
+              html_url: 'https://github.com/test-user1',
+            },
+          },
+        },
+        {
+          commitSHA: 'a0000002',
+          githubIssue: {
+            user: {
+              login: 'deleted-user',
+              html_url: 'https://github.com/deleted-user',
+            },
+          },
+        },
+      ];
+      
+      const committers = await changelog.getCommitters(testCommits);
+
+      expect(committers).toHaveLength(2);
+
+      expect(committers[0]).toEqual({
+        login: 'test-user1',
+        html_url: 'https://github.com/test-user1',
+        name: 'Test User 1',
+      });
+      // Deleted account - falls back to login-only, html-url from PR data, no name
+      expect(committers[1]).toEqual({
+        login: 'deleted-user',
+        html_url: 'https://github.com/deleted-user',
+      });
+    });
   });
 });
