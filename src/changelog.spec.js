@@ -387,7 +387,7 @@ describe('Changelog', () => {
       });
     });
     it('falls back with empty html_url when PR user data has none', async () => {
-      fetch.__setMockResponses({ });
+      fetch.__setMockResponses({});
 
       // ignored-bot is in ignoreCommitters: getUserData should never be called for it
       const changelog = new Changelog({
@@ -453,7 +453,7 @@ describe('Changelog', () => {
           },
         },
       ];
-      
+
       const committers = await changelog.getCommitters(testCommits);
 
       expect(committers).toHaveLength(2);

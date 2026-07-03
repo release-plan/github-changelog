@@ -138,9 +138,8 @@ export default class Changelog {
       if (login && shouldKeepCommiter && !committers[login]) {
         try {
           committers[login] = this.sanitizeCommitter(await this.github.getUserData(user));
-        }
-        catch {
-          // getUserData can fail for various reasons (e.g. 403 for restricted bot accounts or 404 for deleted accounts). 
+        } catch {
+          // getUserData can fail for various reasons (e.g. 403 for restricted bot accounts or 404 for deleted accounts).
           // Fall back to a minimal entry using just the login
           // so the changelog still generates rather than failing completely.
           committers[login] = {
@@ -148,7 +147,6 @@ export default class Changelog {
             html_url: user.html_url || '',
           } as GitHubContributor;
         }
-        
       }
     }
 
