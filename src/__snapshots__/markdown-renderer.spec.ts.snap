@@ -54,6 +54,12 @@ exports[`MarkdownRenderer > renderContributionList > renders a list of contribut
 * [#42](http://github.com/42) My cool PR ([@hzoo](http://hzoo.com))"
 `;
 
+exports[`MarkdownRenderer > renderContributorList > renders a list mixing a fallback (unfetchable) contributor with a full contributor 1`] = `
+"#### Committers: 2
+- @deleted-user
+- Tobias Bieniek (@Turbo87)"
+`;
+
 exports[`MarkdownRenderer > renderContributorList > renders a list of GitHub users 1`] = `
 "#### Committers: 2
 - Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
