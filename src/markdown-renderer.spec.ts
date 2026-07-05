@@ -1,4 +1,4 @@
-import type { GithubAppInfo } from './github-api.js';
+import type { GithubAppInfo, GitHubContributor } from './github-api.js';
 import { CommitInfo, Release } from './interfaces.js';
 import MarkdownRenderer from './markdown-renderer.js';
 
@@ -136,6 +136,24 @@ describe('MarkdownRenderer', () => {
 
       expect(result).toMatchSnapshot();
     });
+
+    it('renders a list mixing a fallback (unfetchable) contributor with a full contributor', () => {
+      const fallbackContributor = {
+        login: 'deleted-user',
+        html_url: '',
+      } as GitHubContributor;
+
+      const fullContributor = {
+        login: 'Turbo87',
+        name: 'Tobias Bieniek',
+        type: 'User',
+        html_url: '',
+      } as GitHubContributor;
+
+      const result = renderer().renderContributorList([fallbackContributor, fullContributor]);
+
+      expect(result).toMatchSnapshot();
+    });
   });
 
   describe('renderContributor', () => {
@@ -170,6 +188,24 @@ describe('MarkdownRenderer', () => {
       } as GithubAppInfo);
 
       expect(result).toEqual('Copilot [Bot] ([@copilot-swe-agent](https://github.com/apps/copilot-swe-agent))');
+    });
+
+    it(`renders a fallback contributor that has an html_url`, () => {
+      const result = renderer().renderContributor({
+        login: 'github-actions',
+        html_url: 'https://github.com/apps/github-actions',
+      } as GitHubContributor);
+
+      expect(result).toEqual('[@github-actions](https://github.com/apps/github-actions)');
+    });
+
+    it(`renders a fallback contributor with no html_url as a plain mention`, () => {
+      const result = renderer().renderContributor({
+        login: 'deleted-user',
+        html_url: '',
+      } as GitHubContributor);
+
+      expect(result).toEqual('@deleted-user');
     });
   });
 
