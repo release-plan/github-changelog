@@ -45,7 +45,7 @@
     "bin"
   ],
   "dependencies": {
-    "@manypkg/get-packages": "^2.2.0",
+    "@manypkg/get-packages": "^3.1.0",
     "chalk": "^4.0.0",
     "cli-highlight": "^2.1.11",
     "execa": "^9.6.1",
