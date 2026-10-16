@@ -1,11 +1,9 @@
-import chalk from 'chalk';
-
-import { highlight } from 'cli-highlight';
 import yargs from 'yargs';
 
 import Changelog from './changelog.js';
 import { load as loadConfig } from './configuration.js';
 import ConfigurationError from './configuration-error.js';
+import { styleText } from 'node:util';
 
 const NEXT_VERSION_DEFAULT = 'Unreleased';
 
@@ -85,21 +83,12 @@ export async function run() {
 
     const result = await new Changelog(config).createMarkdown(options);
 
-    const highlighted = highlight(result, {
-      language: 'Markdown',
-      theme: {
-        section: chalk.bold,
-        string: chalk.hex('#0366d6'),
-        link: chalk.dim,
-      },
-    });
-
-    console.log(highlighted);
+    console.log(result);
   } catch (e) {
     if (e instanceof ConfigurationError) {
-      console.log(chalk.red(e.message));
+      console.log(styleText('red', e.message));
     } else {
-      console.log(chalk.red((e as Error).stack));
+      console.log(styleText('red', (e as Error).stack!));
     }
 
     process.exitCode = 1;

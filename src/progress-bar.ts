@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { styleText } from 'node:util';
 
 import ProgressBar from 'progress';
 
@@ -22,8 +22,8 @@ class ProgressBarController {
 
     this.bar = new ProgressBar(`:bar ${title} (:percent)`, {
       total,
-      complete: chalk.hex('#0366d6')('█'),
-      incomplete: chalk.level > 0 ? chalk.gray('█') : '░',
+      complete: styleText('blue', '█'),
+      incomplete: styleText('gray', '█'),
       clear: true,
 
       // terminal columns - package name length - additional characters length
