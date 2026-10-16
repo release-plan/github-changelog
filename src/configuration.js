@@ -195,12 +195,9 @@ function findRepo(rootPath) {
  */
 function findNextVersion(rootPath) {
   const pkgPath = path.join(rootPath, 'package.json');
-  const lernaPath = path.join(rootPath, 'lerna.json');
-
   const pkg = fs.existsSync(pkgPath) ? JSON.parse(fs.readFileSync(pkgPath, 'utf8')) : {};
-  const lerna = fs.existsSync(lernaPath) ? JSON.parse(fs.readFileSync(lernaPath, 'utf8')) : {};
 
-  return pkg.version ? `v${pkg.version}` : lerna.version ? `v${lerna.version}` : undefined;
+  return pkg.version ? `v${pkg.version}` : undefined;
 }
 
 /**
