@@ -1,5 +1,33 @@
 # Changelog
 
+## Release (2026-10-16)
+
+* github-changelog 4.0.0 (major)
+
+#### :boom: Breaking Change
+* `github-changelog`
+  * [#79](https://github.com/release-plan/github-changelog/pull/79) stop looking in lerna.json for next version ([@mansona](https://github.com/mansona))
+  * [#77](https://github.com/release-plan/github-changelog/pull/77) remove default ignore committers ([@mansona](https://github.com/mansona))
+  * [#78](https://github.com/release-plan/github-changelog/pull/78) swap to using lilconfig ([@mansona](https://github.com/mansona))
+
+#### :rocket: Enhancement
+* `github-changelog`
+  * [#95](https://github.com/release-plan/github-changelog/pull/95) update yargs dep to v18 ([@mansona](https://github.com/mansona))
+  * [#94](https://github.com/release-plan/github-changelog/pull/94) update make-fetch-happen dep to v16 ([@mansona](https://github.com/mansona))
+  * [#93](https://github.com/release-plan/github-changelog/pull/93) update execa dependency to v10 ([@mansona](https://github.com/mansona))
+  * [#92](https://github.com/release-plan/github-changelog/pull/92) update p-map dependency to v7 ([@mansona](https://github.com/mansona))
+  * [#91](https://github.com/release-plan/github-changelog/pull/91) update hosted-git-info dependency to v10 ([@mansona](https://github.com/mansona))
+  * [#90](https://github.com/release-plan/github-changelog/pull/90) remove chalk and cli-highlight dependencies ([@mansona](https://github.com/mansona))
+  * [#89](https://github.com/release-plan/github-changelog/pull/89) update @manypkg/get-packages dependency to v3 ([@mansona](https://github.com/mansona))
+
+#### :house: Internal
+* `github-changelog`
+  * [#87](https://github.com/release-plan/github-changelog/pull/87) update dependabot config ([@mansona](https://github.com/mansona))
+  * [#81](https://github.com/release-plan/github-changelog/pull/81) Setup dependabot ([@mansona](https://github.com/mansona))
+
+#### Committers: 1
+- Chris Manson ([@mansona](https://github.com/mansona))
+
 ## Release (2026-05-08)
 
 * github-changelog 3.1.0 (minor)

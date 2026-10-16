@@ -1,22 +1,26 @@
 {
   "solution": {
     "github-changelog": {
-      "impact": "minor",
-      "oldVersion": "3.0.0",
-      "newVersion": "3.1.0",
+      "impact": "major",
+      "oldVersion": "3.1.0",
+      "newVersion": "4.0.0",
       "tagName": "latest",
       "constraints": [
+        {
+          "impact": "major",
+          "reason": "Appears in changelog section :boom: Breaking Change"
+        },
         {
           "impact": "minor",
           "reason": "Appears in changelog section :rocket: Enhancement"
         },
         {
           "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./package.json"
     }
   },
-  "description": "## Release (2026-05-08)\n\n* github-changelog 3.1.0 (minor)\n\n#### :rocket: Enhancement\n* `github-changelog`\n  * [#75](https://github.com/release-plan/github-changelog/pull/75) update execa to v9 ([@mansona](https://github.com/mansona))\n\n#### :bug: Bug Fix\n* `github-changelog`\n  * [#72](https://github.com/release-plan/github-changelog/pull/72) publish fewer files by adding a files entry to package.json ([@mansona](https://github.com/mansona))\n\n#### Committers: 1\n- Chris Manson ([@mansona](https://github.com/mansona))\n"
+  "description": "## Release (2026-10-16)\n\n* github-changelog 4.0.0 (major)\n\n#### :boom: Breaking Change\n* `github-changelog`\n  * [#79](https://github.com/release-plan/github-changelog/pull/79) stop looking in lerna.json for next version ([@mansona](https://github.com/mansona))\n  * [#77](https://github.com/release-plan/github-changelog/pull/77) remove default ignore committers ([@mansona](https://github.com/mansona))\n  * [#78](https://github.com/release-plan/github-changelog/pull/78) swap to using lilconfig ([@mansona](https://github.com/mansona))\n\n#### :rocket: Enhancement\n* `github-changelog`\n  * [#95](https://github.com/release-plan/github-changelog/pull/95) update yargs dep to v18 ([@mansona](https://github.com/mansona))\n  * [#94](https://github.com/release-plan/github-changelog/pull/94) update make-fetch-happen dep to v16 ([@mansona](https://github.com/mansona))\n  * [#93](https://github.com/release-plan/github-changelog/pull/93) update execa dependency to v10 ([@mansona](https://github.com/mansona))\n  * [#92](https://github.com/release-plan/github-changelog/pull/92) update p-map dependency to v7 ([@mansona](https://github.com/mansona))\n  * [#91](https://github.com/release-plan/github-changelog/pull/91) update hosted-git-info dependency to v10 ([@mansona](https://github.com/mansona))\n  * [#90](https://github.com/release-plan/github-changelog/pull/90) remove chalk and cli-highlight dependencies ([@mansona](https://github.com/mansona))\n  * [#89](https://github.com/release-plan/github-changelog/pull/89) update @manypkg/get-packages dependency to v3 ([@mansona](https://github.com/mansona))\n\n#### :house: Internal\n* `github-changelog`\n  * [#87](https://github.com/release-plan/github-changelog/pull/87) update dependabot config ([@mansona](https://github.com/mansona))\n  * [#81](https://github.com/release-plan/github-changelog/pull/81) Setup dependabot ([@mansona](https://github.com/mansona))\n\n#### Committers: 1\n- Chris Manson ([@mansona](https://github.com/mansona))\n"
 }
