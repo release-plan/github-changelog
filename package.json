@@ -49,7 +49,7 @@
     "execa": "^10.1.1",
     "hosted-git-info": "^10.1.1",
     "lilconfig": "^3.0.0",
-    "make-fetch-happen": "^15.0.5",
+    "make-fetch-happen": "^16.0.1",
     "p-map": "^7.1.1",
     "progress": "^2.0.0",
     "yargs": "^17.1.0"
