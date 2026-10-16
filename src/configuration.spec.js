@@ -1,12 +1,13 @@
-import os from 'os';
 import fs from 'fs-extra';
 import path from 'path';
+import tmp from 'tmp';
 
 import { findRepoFromPkg, load } from './configuration.js';
 import ConfigurationError from './configuration-error.js';
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-const tmpDir = `${os.tmpdir()}/changelog-test`;
+let tmpDir;
+let tmpobj;
 
 vi.mock('./git', () => ({
   getRootPath() {
@@ -17,15 +18,16 @@ vi.mock('./git', () => ({
 describe('Configuration', function () {
   describe('fromPath', function () {
     beforeEach(function () {
-      fs.ensureDirSync(tmpDir);
+      tmpobj = tmp.dirSync({ unsafeCleanup: true });
+      tmpDir = tmpobj.name;
     });
 
     afterEach(function () {
-      fs.removeSync(tmpDir);
+      tmpobj.removeCallback();
     });
 
-    it("reads the configuration from a cosmiconfig location e.g. '.changelogrc'", function () {
-      fs.writeJsonSync(path.join(tmpDir, '.changelogrc'), { repo: 'foo/bar', nextVersion: 'next' });
+    it("reads the configuration from a lilconfig location e.g. '.changelogrc.json'", function () {
+      fs.writeJsonSync(path.join(tmpDir, '.changelogrc.json'), { repo: 'foo/bar', nextVersion: 'next' });
       fs.writeJsonSync(path.join(tmpDir, 'package.json'), {
         name: 'bar',
       });
@@ -60,7 +62,7 @@ describe('Configuration', function () {
       expect(result.repo).toEqual('foo/bar');
     });
 
-    it('throws ConfigurationError if all potential cosmiconfig locations are missing (e.g. package.json or .changelogrc)', function () {
+    it('throws ConfigurationError if all potential lilconfig locations are missing (e.g. package.json or .changelogrc.json)', function () {
       expect(() => load()).toThrowError(ConfigurationError);
     });
 

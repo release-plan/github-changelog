@@ -48,9 +48,9 @@
     "@manypkg/get-packages": "^2.2.0",
     "chalk": "^4.0.0",
     "cli-highlight": "^2.1.11",
-    "cosmiconfig": "^10.0.1",
     "execa": "^9.6.1",
     "hosted-git-info": "^4.0.0",
+    "lilconfig": "^3.0.0",
     "make-fetch-happen": "^15.0.5",
     "p-map": "^3.0.0",
     "progress": "^2.0.0",
@@ -74,6 +74,7 @@
     "prettier": "3.8.3",
     "release-plan": "^0.18.0",
     "rimraf": "3.0.2",
+    "tmp": "^0.2.7",
     "typescript": "6.0.3",
     "typescript-eslint": "^8.59.2",
     "vitest": "^3.0.4"

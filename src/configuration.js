@@ -5,7 +5,7 @@ import { getPackagesSync } from '@manypkg/get-packages';
 
 import ConfigurationError from './configuration-error.js';
 import { getRootPath } from './git.js';
-import { cosmiconfigSync } from 'cosmiconfig';
+import { lilconfigSync } from 'lilconfig';
 
 /**
  * @typedef {Object} Configuration
@@ -79,13 +79,13 @@ function getPackages(rootPath) {
 }
 
 /**
- * Load config from file or package.json using [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig)
+ * Load config from file or package.json using [lilconfig](https://github.com/antonk52/lilconfig)
  *
  * @param {string} rootPath
  * @returns {Object} config
  */
 function getConfig(rootPath) {
-  const explorerSync = cosmiconfigSync('changelog');
+  const explorerSync = lilconfigSync('changelog');
 
   const searchedFor = explorerSync.search(rootPath)?.config ?? {};
 
@@ -101,7 +101,7 @@ function getConfig(rootPath) {
  * @returns {Configuration} config
  */
 function fromPath(rootPath, options = {}) {
-  // Step 1: load partial config via cosmiconfig
+  // Step 1: load partial config via lilconfig
   const config = getConfig(rootPath);
 
   if (options.repo) {
