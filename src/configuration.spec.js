@@ -1,33 +1,38 @@
-import os from 'os';
 import fs from 'fs-extra';
 import path from 'path';
+import tmp from 'tmp';
 
-import { findRepoFromPkg, fromPath } from './configuration.js';
+import { findRepoFromPkg, load } from './configuration.js';
 import ConfigurationError from './configuration-error.js';
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+let tmpDir;
+let tmpobj;
+
+vi.mock('./git', () => ({
+  getRootPath() {
+    return tmpDir;
+  },
+}));
 
 describe('Configuration', function () {
   describe('fromPath', function () {
-    const tmpDir = `${os.tmpdir()}/changelog-test`;
-
     beforeEach(function () {
-      fs.ensureDirSync(tmpDir);
+      tmpobj = tmp.dirSync({ unsafeCleanup: true });
+      tmpDir = tmpobj.name;
     });
 
     afterEach(function () {
-      fs.removeSync(tmpDir);
+      tmpobj.removeCallback();
     });
 
-    it("reads the configuration from 'lerna.json'", function () {
-      fs.writeJsonSync(path.join(tmpDir, 'lerna.json'), {
-        changelog: { repo: 'foo/bar', nextVersion: 'next' },
-      });
+    it("reads the configuration from a lilconfig location e.g. '.changelogrc.json'", function () {
+      fs.writeJsonSync(path.join(tmpDir, '.changelogrc.json'), { repo: 'foo/bar', nextVersion: 'next' });
       fs.writeJsonSync(path.join(tmpDir, 'package.json'), {
         name: 'bar',
       });
 
-      const result = fromPath(tmpDir);
+      const result = load();
       expect(result.nextVersion).toEqual('next');
       expect(result.repo).toEqual('foo/bar');
     });
@@ -38,7 +43,7 @@ describe('Configuration', function () {
         private: true,
       });
 
-      const result = fromPath(tmpDir, {
+      const result = load({
         repo: 'foo/bar',
       });
       expect(result.nextVersion).toEqual(undefined);
@@ -48,36 +53,21 @@ describe('Configuration', function () {
 
     it("reads the configuration from 'package.json'", function () {
       fs.writeJsonSync(path.join(tmpDir, 'package.json'), {
+        name: 'test-app',
         changelog: { repo: 'foo/bar', nextVersion: 'next' },
       });
 
-      const result = fromPath(tmpDir);
+      const result = load();
       expect(result.nextVersion).toEqual('next');
       expect(result.repo).toEqual('foo/bar');
     });
 
-    it("prefers 'package.json' over 'lerna.json'", function () {
-      fs.writeJsonSync(path.join(tmpDir, 'lerna.json'), {
-        version: '1.0.0-lerna.0',
-        changelog: { repo: 'foo/lerna', nextVersionFromMetadata: true },
-      });
-
-      fs.writeJsonSync(path.join(tmpDir, 'package.json'), {
-        version: '1.0.0-package.0',
-        changelog: { repo: 'foo/package', nextVersionFromMetadata: true },
-      });
-
-      const result = fromPath(tmpDir);
-      expect(result.nextVersion).toEqual('v1.0.0-package.0');
-      expect(result.repo).toEqual('foo/package');
-    });
-
-    it("throws ConfigurationError if neither 'package.json' nor 'lerna.json' exist", function () {
-      expect(() => fromPath(tmpDir)).toThrowError(ConfigurationError);
+    it('throws ConfigurationError if all potential lilconfig locations are missing (e.g. package.json or .changelogrc.json)', function () {
+      expect(() => load()).toThrowError(ConfigurationError);
     });
 
     it('uses passed in `repo` option', function () {
-      const result = fromPath(tmpDir, { repo: 'foo/bar' });
+      const result = load({ repo: 'foo/bar' });
       expect(result.nextVersion).toEqual(undefined);
       expect(result.repo).toEqual('foo/bar');
     });
