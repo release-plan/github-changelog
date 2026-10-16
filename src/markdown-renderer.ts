@@ -122,7 +122,9 @@ export default class MarkdownRenderer {
 
   public renderContributor(contributor: GitHubContributor): string {
     const userName = (contributor as GithubAppInfo).slug ?? (contributor as GithubUserInfo).login;
-    const userNameAndLink = `[@${userName}](${contributor.html_url})`;
+    // html_url can be empty when getCommiters falls back for unfetchable committers (e.g. deleted users, restricted users).
+    // Render a plain @login metion instead of a markdown link with an empty href.
+    const userNameAndLink = contributor.html_url ? `[@${userName}](${contributor.html_url})` : `@${userName}`;
 
     if (contributor.name) {
       const name = contributor.name + (!('type' in contributor) ? ' [Bot]' : '');
