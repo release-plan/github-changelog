@@ -7,9 +7,10 @@
     "removeComments": true,
     "allowJs": true,
     "strict": true,
+    "declaration": true,
     "lib": ["es2015"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.js"],
   "exclude": ["src/**/*.spec.ts", "src/__mocks__"]
 }

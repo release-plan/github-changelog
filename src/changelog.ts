@@ -131,7 +131,7 @@ export default class Changelog {
       const issue = commit.githubIssue;
       const user = issue && issue.user;
       const login = user && user.login;
-      // If a list of `ignoreCommitters` is provided in the lerna.json config
+      // If a list of `ignoreCommitters` is provided in the config
       // check if the current committer should be kept or not.
       const shouldKeepCommiter = login && !this.ignoreCommitter(login);
 

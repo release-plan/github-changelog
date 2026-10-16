@@ -5,33 +5,46 @@ import { getPackagesSync } from '@manypkg/get-packages';
 
 import ConfigurationError from './configuration-error.js';
 import { getRootPath } from './git.js';
+import { cosmiconfigSync } from 'cosmiconfig';
 
-export interface Configuration {
-  repo: string;
-  github?: string;
-  rootPath: string;
-  labels: { [key: string]: string };
-  ignoreCommitters: string[];
-  ignoreLabel: string;
-  cacheDir?: string;
-  ignoreReleases?: boolean;
-  nextVersion: string | undefined;
-  nextVersionFromMetadata?: boolean;
-  wildcardLabel?: string;
-  packages: { name: string; path: string }[];
-}
+/**
+ * @typedef {Object} Configuration
+ * @property {string} repo
+ * @property {string} [github]
+ * @property {string} rootPath
+ * @property {{ [key: string]: string }} labels
+ * @property {string[]} ignoreCommitters
+ * @property {string} ignoreLabel
+ * @property {string} [cacheDir]
+ * @property {boolean} [ignoreReleases]
+ * @property {string|undefined} nextVersion
+ * @property {boolean} [nextVersionFromMetadata]
+ * @property {string} [wildcardLabel]
+ * @property {{ name: string; path: string }[]} packages
+ */
 
-export interface ConfigLoaderOptions {
-  repo?: string;
-  nextVersionFromMetadata?: boolean;
-}
+/**
+ * @typedef {Object} ConfigLoaderOptions
+ * @property {string} [repo]
+ * @property {boolean} [nextVersionFromMetadata]
+ */
 
-export function load(options: ConfigLoaderOptions = {}): Configuration {
+/**
+ * Loads our config - this is the main entrypoint for loading config
+ *
+ * @param {ConfigLoaderOptions} options
+ * @returns {Configuration}
+ */
+export function load(options) {
   const rootPath = getRootPath();
   return fromPath(rootPath, options);
 }
 
-function getPackages(rootPath: string): { name: string; path: string }[] {
+/**
+ * @param {string} rootPath
+ * @returns {{name: string, path: string }[]}
+ */
+function getPackages(rootPath) {
   try {
     const { packages } = getPackagesSync(rootPath);
 
@@ -65,9 +78,31 @@ function getPackages(rootPath: string): { name: string; path: string }[] {
   }
 }
 
-export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): Configuration {
-  // Step 1: load partial config from `package.json` or `lerna.json`
-  const config = fromPackageConfig(rootPath) || fromLernaConfig(rootPath) || {};
+/**
+ * Load config from file or package.json using [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig)
+ *
+ * @param {string} rootPath
+ * @returns {Object} config
+ */
+function getConfig(rootPath) {
+  const explorerSync = cosmiconfigSync('changelog');
+
+  const searchedFor = explorerSync.search(rootPath)?.config ?? {};
+
+  // TODO do some "type narrowing" here;
+
+  return searchedFor;
+}
+
+/**
+ *
+ * @param {string} rootPath
+ * @param {ConfigLoaderOptions} options
+ * @returns {Configuration} config
+ */
+function fromPath(rootPath, options = {}) {
+  // Step 1: load partial config via cosmiconfig
+  const config = getConfig(rootPath);
 
   if (options.repo) {
     config.repo = options.repo;
@@ -142,21 +177,12 @@ export function fromPath(rootPath: string, options: ConfigLoaderOptions = {}): C
   };
 }
 
-function fromLernaConfig(rootPath: string): Partial<Configuration> | undefined {
-  const lernaPath = path.join(rootPath, 'lerna.json');
-  if (fs.existsSync(lernaPath)) {
-    return JSON.parse(fs.readFileSync(lernaPath, 'utf8')).changelog;
-  }
-}
-
-function fromPackageConfig(rootPath: string): Partial<Configuration> | undefined {
-  const pkgPath = path.join(rootPath, 'package.json');
-  if (fs.existsSync(pkgPath)) {
-    return JSON.parse(fs.readFileSync(pkgPath, 'utf8')).changelog;
-  }
-}
-
-function findRepo(rootPath: string): string | undefined {
+/**
+ *
+ * @param {string} rootPath
+ * @returns {string|undefined}
+ */
+function findRepo(rootPath) {
   const pkgPath = path.join(rootPath, 'package.json');
   if (!fs.existsSync(pkgPath)) {
     return;
@@ -170,7 +196,12 @@ function findRepo(rootPath: string): string | undefined {
   return findRepoFromPkg(pkg);
 }
 
-function findNextVersion(rootPath: string): string | undefined {
+/**
+ *
+ * @param {string} rootPath
+ * @returns {string|undefined}
+ */
+function findNextVersion(rootPath) {
   const pkgPath = path.join(rootPath, 'package.json');
   const lernaPath = path.join(rootPath, 'lerna.json');
 
@@ -180,7 +211,14 @@ function findNextVersion(rootPath: string): string | undefined {
   return pkg.version ? `v${pkg.version}` : lerna.version ? `v${lerna.version}` : undefined;
 }
 
-export function findRepoFromPkg(pkg: { repository: { url: string } | string }): string | undefined {
+/**
+ * This function is intended to extract the repository from whatever is written in package.json
+ * TODO review other packages that can be doing this for us and are better tested
+ *
+ * @param {{repository: {url: string} | string}} pkg
+ * @returns {string|undefined} repository in the format <org>/<repo-name>
+ */
+export function findRepoFromPkg(pkg) {
   // @ts-expect-error ignore for now
   const url = pkg.repository.url || pkg.repository;
   const info = hostedGitInfo.fromUrl(url);
