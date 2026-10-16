@@ -46,7 +46,7 @@
   ],
   "dependencies": {
     "@manypkg/get-packages": "^3.1.0",
-    "execa": "^9.6.1",
+    "execa": "^10.1.1",
     "hosted-git-info": "^10.1.1",
     "lilconfig": "^3.0.0",
     "make-fetch-happen": "^15.0.5",
