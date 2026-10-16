@@ -52,7 +52,7 @@
     "make-fetch-happen": "^16.0.1",
     "p-map": "^7.1.1",
     "progress": "^2.0.0",
-    "yargs": "^17.1.0"
+    "yargs": "^18.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
