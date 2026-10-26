@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`createMarkdown with an unfetchable committer > still generates a readable changelog when a bot committer is unfetchable 1`] = `
+"
+## Unreleased (2099-01-01)
+
+#### :house: Maintenance
+* [#2](https://github.com/embroider-build/github-changelog/pull/2) chore: bump dependencies ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### Committers: 2
+- Real User ([@real-user](https://github.com/real-user))
+- [@dependabot[bot]](https://github.com/apps/dependabot)"
+`;
